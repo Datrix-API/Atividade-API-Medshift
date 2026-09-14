@@ -46,10 +46,10 @@ Inicio
  //Periodo matutino
       se opcao = 1 entao
 //Informando os clinicos que vão atuar das 6h as 14:35
-            CGM[0] <- "Flaco Lopez"
-            CGM[1] <- "Valdivia"
-            CGM[2] <- "Gustavo Gomez"
-            CGM[3] <- "Abel Ferreira"
+            CGM[0] <- "Clinico Geral 1"
+            CGM[1] <- "Clinico Geral 2"
+            CGM[2] <- "Clinico Geral 3"
+            CGM[3] <- "Clinico Geral 4"
 
             escreval("========================")
             escreval("CLINICOS GERAIS MATUTINO")
@@ -67,10 +67,10 @@ Inicio
 //Periodo vespertino
       se opcao = 2 entao
 //Informando os clinicos que vão atuar das 14:40h as 23:05
-         CGV[0] <- "Neymar Junior"
-         CGV[1] <- "L Messi"
-         CGV[2] <- "Cristiano Ronaldo"
-         CGV[3] <- "Mbappe"
+         CGV[0] <- "Clinico Geral 5"
+         CGV[1] <- "Clinico Geral 6"
+         CGV[2] <- "Clinico Geral 7"
+         CGV[3] <- "Clinico Geral 8"
 
          escreval("CLINICOS GERAIS VESPERTINO")
          escreval("========================")
@@ -87,10 +87,10 @@ Inicio
 //Periodo noturno
       se opcao = 3 entao
 //Informando os clinicos que vão atuar das 23:05h as 6h
-         CGN[0] <- "Cristiano Araujo"
-         CGN[1] <- "Vinicius J"
-         CGN[2] <- "Charlie B"
-         CGN[3] <- "Joca"
+         CGN[0] <- "Clinico Geral 9 "
+         CGN[1] <- "Clinico Geral 10"
+         CGN[2] <- "Clinico Geral 11"
+         CGN[3] <- "Clinico Geral 12"
 
          escreval("CLINICOS GERAIS NOTURNO")
          escreval("========================")
