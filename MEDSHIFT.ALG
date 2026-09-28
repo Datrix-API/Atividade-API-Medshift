@@ -1,42 +1,54 @@
 Algoritmo "MEDSHIFT"
 
 Var
-   //declaração das variáveis do código
-   turno, turno1, turno2, turno3: caractere
-
-   i, x, z: inteiro
-
+   turno: inteiro
+   turno1, turno2, turno3: caractere
+   i, x: inteiro
+   z: caractere
    clinico1, pediatra1, cirurgiao1: inteiro
    clinico2, pediatra2, cirurgiao2: inteiro
    clinico3, pediatra3, cirurgiao3: inteiro
-
    manha_usada, tarde_usada, noite_usada: logico
    turno_valido, clinico_valido, pediatra_valido, cirurgiao_valido: logico
+
 Inicio
-   //seção para escolha de turnos
+   manha_usada <- falso
+   tarde_usada <- falso
+   noite_usada <- falso
+
+   turno1 <- "MANHÃ"
+   turno2 <- "TARDE"
+   turno3 <- "NOITE"
+
+   // Escolha dos 3 turnos
    para i <- 1 ate 3 faca
+
       turno_valido <- falso
       clinico_valido <- falso
       pediatra_valido <- falso
       cirurgiao_valido <- falso
+
+      // Validação da seleção do turno
       para x <- 1 ate 100 faca
          se turno_valido = falso entao
             escreval ("======================")
             escreval ("Hospital Santa Helena")
             escreval ("=======MEDSHIFT=======")
             escreval ("")
-            Escreval ("Informe o turno do plantão:")
-            Escreval ("1 - MANHÃ")
-            Escreval ("2 - TARDE")
-            Escreval ("3 - NOITE")
-            leia(turno) // leia adicionado aqui para que o usuario tenha
-            //"o poder de escolha"
-            //TURNO DA MANHÃ
+            escreval ("Informe o turno do plantão:")
+            escreval ("1 - MANHÃ")
+            escreval ("2 - TARDE")
+            escreval ("3 - NOITE")
+            escreval ("")
+            escreva ("Opção: ")
+            leia(turno)
+
+            // Manhã
             se turno = 1 entao
                se manha_usada = falso entao
-                  turno1 <- "MANHÃ"
                   manha_usada <- verdadeiro
                   turno_valido <- verdadeiro
+                  escreval ("")
                   escreval ("===========================")
                   escreval ("Turno da MANHÃ selecionado.")
                   escreval ("===========================")
@@ -45,20 +57,20 @@ Inicio
                   escreval ("")
                   escreval ("====================================")
                   escreval ("O turno da MANHÃ já foi selecionado.")
-                  escrevaL ("Informe outro turno.")
+                  escreval ("Informe outro turno.")
                   escreval ("====================================")
                   escreval ("")
-                  escreval ("PRESSIONE ENTER PARA CONTINUAR.")
-                  leia (z)
+                  escreval ("Digite ENTER para continuar.")
+                  leia(z)
                   limpatela
                fimse
             senao
-               //TURNO DA TARDE
+               // Tarde
                se turno = 2 entao
                   se tarde_usada = falso entao
-                     turno2 <- "TARDE"
                      tarde_usada <- verdadeiro
                      turno_valido <- verdadeiro
+                     escreval ("")
                      escreval ("===========================")
                      escreval ("Turno da TARDE selecionado.")
                      escreval ("===========================")
@@ -66,21 +78,21 @@ Inicio
                   senao
                      escreval ("")
                      escreval ("====================================")
-                     escreval ("o turno da TARDE já foi selecionado.")
-                     escrevaL ("Informe outro turno.")
+                     escreval ("O turno da TARDE já foi selecionado.")
+                     escreval ("Informe outro turno.")
                      escreval ("====================================")
                      escreval ("")
-                     escreval ("PRESSIONE ENTER PARA CONTINUAR.")
-                     leia (z)
+                     escreval ("Digite ENTER para continuar.")
+                     leia(z)
                      limpatela
                   fimse
                senao
-                  //TURNO DA NOITE
+                  // Noite
                   se turno = 3 entao
                      se noite_usada = falso entao
-                        turno3 <- "NOITE"
                         noite_usada <- verdadeiro
                         turno_valido <- verdadeiro
+                        escreval ("")
                         escreval ("===========================")
                         escreval ("Turno da NOITE selecionado.")
                         escreval ("===========================")
@@ -88,40 +100,44 @@ Inicio
                      senao
                         escreval ("")
                         escreval ("====================================")
-                        escreval ("o turno da NOITE já foi selecionado.")
-                        escrevaL ("Informe outro turno.")
+                        escreval ("O turno da NOITE já foi selecionado.")
+                        escreval ("Informe outro turno.")
                         escreval ("====================================")
                         escreval ("")
-                        escreval ("PRESSIONE ENTER PARA CONTINUAR.")
-                        leia (z)
+                        escreval ("Digite ENTER para continuar.")
+                        leia(z)
                         limpatela
                      fimse
                   senao
+                     // Opção inválida
+                     escreval ("")
                      escreval ("=========================================")
-                     escreval ("Opção de turno inválida. Digite 1,2 ou 3.")
+                     escreval ("Opção de turno inválida.")
+                     escreval ("Digite 1, 2 ou 3.")
                      escreval ("=========================================")
                      escreval ("")
-                     escreval ("PRESSIONE ENTER PARA CONTINUAR.")
-                     leia (z)
+                     escreval ("Digite ENTER para continuar.")
+                     leia(z)
                      limpatela
                   fimse
                fimse
             fimse
          fimse
       fimpara
-      //definição de quantidades do primeiro turno
-      //clínicos gerais do primeiro turno
-      clinico_valido <-falso
+
+      // Cadastro: Turno da Manhã
       se turno = 1 entao
+         // Clínicos Gerais
+         clinico_valido <- falso
          para x <- 1 ate 100 faca
             se clinico_valido = falso entao
                escreval ("Informe a quantidade de CLÍNICOS GERAIS:")
-               leia (clinico1)
-               se (clinico1 <= 4) e (clinico1 >= 2) entao
+               leia(clinico1)
+               se (clinico1 >= 2) e (clinico1 <= 4) entao
                   clinico_valido <- verdadeiro
                   escreval ("")
                   escreval ("======================================")
-                  escreval ("CLÍNICOS GERAIS do primeiro turno: ",clinico1)
+                  escreval ("CLÍNICOS GERAIS do turno da MANHÃ: ", clinico1)
                   escreval ("======================================")
                   escreval ("")
                senao
@@ -134,19 +150,19 @@ Inicio
                fimse
             fimse
          fimpara
-         //pediatras do primeiro turno
+
+         // Pediatras
          pediatra_valido <- falso
          para x <- 1 ate 100 faca
             se pediatra_valido = falso entao
-
                escreval ("Informe a quantidade de PEDIATRAS:")
                leia(pediatra1)
-               se (pediatra1 <= 2) e (pediatra1 >= 1) entao
+               se (pediatra1 >= 1) e (pediatra1 <= 2) entao
                   pediatra_valido <- verdadeiro
                   escreval ("")
-                  escreval ("===============================")
-                  escreval ("PEDIATRAS do primeiro turno: ", pediatra1)
-                  escreval ("===============================")
+                  escreval ("=================================")
+                  escreval ("PEDIATRAS do turno da MANHÃ: ", pediatra1)
+                  escreval ("=================================")
                   escreval ("")
                senao
                   escreval ("")
@@ -158,47 +174,51 @@ Inicio
                fimse
             fimse
          fimpara
-         //cirurgiões do primeiro turno
+
+         // Cirurgiões
          cirurgiao_valido <- falso
          para x <- 1 ate 100 faca
-            se cirurgiao_valido =  falso entao
-
+            se cirurgiao_valido = falso entao
                escreval ("Informe a quantidade de CIRURGIÕES:")
                leia(cirurgiao1)
-               se (cirurgiao1 <= 2) e (cirurgiao1 >= 1) entao
+               se (cirurgiao1 >= 1) e (cirurgiao1 <= 2) entao
                   cirurgiao_valido <- verdadeiro
                   escreval ("")
-                  escreval ("================================")
-                  escreval ("CIRURGIÕES do primeiro turno: ", cirurgiao1)
-                  escreval ("================================")
+                  escreval ("==================================")
+                  escreval ("CIRURGIÕES do turno da MANHÃ: ", cirurgiao1)
+                  escreval ("==================================")
+                  escreval ("")
                senao
                   escreval ("")
-                  escreval ("=================================")
-                  escreval ("Quantidade de cirurgiao inválida.")
+                  escreval ("==================================")
+                  escreval ("Quantidade de CIRURGIÕES inválida.")
                   escreval ("Digite um número de 1 a 2.")
-                  escreval ("=================================")
+                  escreval ("==================================")
+                  escreval ("")
                fimse
             fimse
          fimpara
+
          escreval ("")
-         escreval ("")
-         escreval ("PRESSIONE ENTER PARA CONTINUAR.")
-         leia (z)
+         escreval ("Digite ENTER para continuar.")
+         leia(z)
          limpatela
       fimse
-      //definição de quantidades do segundo turno
-      //clínicos gerais do segundo turno
+
+      // Cadastro: Turno da Tarde
       se turno = 2 entao
+         // Clínicos Gerais
+         clinico_valido <- falso
          para x <- 1 ate 100 faca
             se clinico_valido = falso entao
                escreval ("Informe a quantidade de CLÍNICOS GERAIS:")
-               leia (clinico2)
-               se (clinico2 <= 4) e (clinico2 >= 2) entao
+               leia(clinico2)
+               se (clinico2 >= 2) e (clinico2 <= 4) entao
                   clinico_valido <- verdadeiro
                   escreval ("")
-                  escreval ("====================================")
-                  escreval ("CLÍNICOS GERAIS do segundo turno: ",clinico2)
-                  escreval ("====================================")
+                  escreval ("======================================")
+                  escreval ("CLÍNICOS GERAIS do turno da TARDE: ", clinico2)
+                  escreval ("======================================")
                   escreval ("")
                senao
                   escreval ("")
@@ -210,99 +230,19 @@ Inicio
                fimse
             fimse
          fimpara
-      fimse
-      //pediatras do segundo turno
-      se turno = 2 entao
-         para x <- 1 ate 100 faca
-            se pediatra_valido = falso entao
 
-               Escreval ("Informe a quantidade de PEDIATRAS:")
-               leia (pediatra2)
-               se (pediatra2 <= 2) e (pediatra2 >= 1) entao
-                  pediatra_valido <- verdadeiro
-                  escreval ("")
-                  escreval ("==============================")
-                  escreval ("PEDIATRAS do segundo turno: ",pediatra2)
-                  escreval ("==============================")
-                  escreval ("")
-               senao
-                  escreval ("")
-                  escreval ("=================================")
-                  escreval ("Quantidade de PEDIATRAS inválida.")
-                  escreval ("Digite um número de 1 a 2.")
-                  escreval ("=================================")
-                  escreval ("")
-               fimse
-            fimse
-         fimpara
-      fimse
-      //cirurgiões do segundo turno
-      se turno = 2 entao
-         para x <- 1 ate 100 faca
-            se cirurgiao_valido = falso entao
-
-               Escreval ("Informe a quantidade de CIRURGIÕES:")
-               leia (cirurgiao2)
-               se (cirurgiao2 <= 2) e (cirurgiao2 >= 1) entao
-                  cirurgiao_valido <- verdadeiro
-                  escreval ("")
-                  escreval ("===============================")
-                  escreval ("CIRURGIÕES do segundo turno: ",cirurgiao2)
-                  escreval ("===============================")
-                  escreval ("")
-               senao
-                  escreval ("")
-                  escreval ("==================================")
-                  escreval ("Quantidade de CIRURGIÕES inválida.")
-                  escreval ("Digite um número de 1 a 2.")
-                  escreval ("==================================")
-                  escreval ("")
-               fimse
-            fimse
-         fimpara
-         escreval ("")
-         escreval ("")
-         escreval ("PRESSIONE ENTER PARA CONTINUAR.")
-         leia (z)
-         limpatela
-      fimse
-      //definição de quantidades do terceiro turno
-      //clínicos gerais do terceiro turno
-      se turno = 3 entao
-         para x <- 1 ate 100 faca
-            se clinico_valido = falso entao
-               escreval ("Informe a quantidade de CLÍNICOS GERAIS:")
-               leia (clinico3)
-               se (clinico3 <= 4) e (clinico3 >= 2) entao
-                  clinico_valido <- verdadeiro
-                  escreval ("")
-                  escreval ("=====================================")
-                  escreval ("CLÍNICOS GERAIS do terceiro turno: ",clinico3)
-                  escreval ("=====================================")
-                  escreval ("")
-               senao
-                  escreval ("")
-                  escreval ("======================================")
-                  escreval ("Quantidade de CLÍNICOS GERAIS inválida")
-                  escreval ("Digite um número de 2 a 4.")
-                  escreval ("======================================")
-                  escreval ("")
-               fimse
-            fimse
-         fimpara
-      fimse
-      //pediatras do terceiro turno
-      se turno = 3 entao
+         // Pediatras
+         pediatra_valido <- falso
          para x <- 1 ate 100 faca
             se pediatra_valido = falso entao
                escreval ("Informe a quantidade de PEDIATRAS:")
-               leia (pediatra3)
-               se (pediatra3 <= 2) e (pediatra3 >= 1) entao
+               leia(pediatra2)
+               se (pediatra2 >= 1) e (pediatra2 <= 2) entao
                   pediatra_valido <- verdadeiro
                   escreval ("")
-                  escreval ("===============================")
-                  escreval ("PEDIATRAS do terceiro turno: ", pediatra3)
-                  escreval ("===============================")
+                  escreval ("=================================")
+                  escreval ("PEDIATRAS do turno da TARDE: ", pediatra2)
+                  escreval ("=================================")
                   escreval ("")
                senao
                   escreval ("")
@@ -314,20 +254,19 @@ Inicio
                fimse
             fimse
          fimpara
-      fimse
-      //cirurgiões do terceiro turno
-      se turno = 3 entao
+
+         // Cirurgiões
+         cirurgiao_valido <- falso
          para x <- 1 ate 100 faca
             se cirurgiao_valido = falso entao
-
                escreval ("Informe a quantidade de CIRURGIÕES:")
-               leia (cirurgiao3)
-               se (cirurgiao3 <= 2) e (cirurgiao3 >= 1) entao
+               leia(cirurgiao2)
+               se (cirurgiao2 >= 1) e (cirurgiao2 <= 2) entao
                   cirurgiao_valido <- verdadeiro
                   escreval ("")
-                  escreval ("===============================")
-                  escreval ("CIRURGIÕES do terceiro turno: ", cirurgiao3)
-                  escreval ("===============================")
+                  escreval ("==================================")
+                  escreval ("CIRURGIÕES do turno da TARDE: ", cirurgiao2)
+                  escreval ("==================================")
                   escreval ("")
                senao
                   escreval ("")
@@ -339,52 +278,139 @@ Inicio
                fimse
             fimse
          fimpara
+
          escreval ("")
+         escreval ("Digite ENTER para continuar.")
+         leia(z)
+         limpatela
+      fimse
+
+      // Cadastro: Turno da Noite
+      se turno = 3 entao
+         // Clínicos Gerais
+         clinico_valido <- falso
+         para x <- 1 ate 100 faca
+            se clinico_valido = falso entao
+               escreval ("Informe a quantidade de CLÍNICOS GERAIS:")
+               leia(clinico3)
+               se (clinico3 >= 2) e (clinico3 <= 4) entao
+                  clinico_valido <- verdadeiro
+                  escreval ("")
+                  escreval ("======================================")
+                  escreval ("CLÍNICOS GERAIS do turno da NOITE: ", clinico3)
+                  escreval ("======================================")
+                  escreval ("")
+               senao
+                  escreval ("")
+                  escreval ("=======================================")
+                  escreval ("Quantidade de CLÍNICOS GERAIS inválida.")
+                  escreval ("Digite um número de 2 a 4.")
+                  escreval ("=======================================")
+                  escreval ("")
+               fimse
+            fimse
+         fimpara
+
+         // Pediatras
+         pediatra_valido <- falso
+         para x <- 1 ate 100 faca
+            se pediatra_valido = falso entao
+               escreval ("Informe a quantidade de PEDIATRAS:")
+               leia(pediatra3)
+               se (pediatra3 >= 1) e (pediatra3 <= 2) entao
+                  pediatra_valido <- verdadeiro
+                  escreval ("")
+                  escreval ("=================================")
+                  escreval ("PEDIATRAS do turno da NOITE: ", pediatra3)
+                  escreval ("=================================")
+                  escreval ("")
+               senao
+                  escreval ("")
+                  escreval ("=================================")
+                  escreval ("Quantidade de PEDIATRAS inválida.")
+                  escreval ("Digite um número de 1 a 2.")
+                  escreval ("=================================")
+                  escreval ("")
+               fimse
+            fimse
+         fimpara
+
+         // Cirurgiões
+         cirurgiao_valido <- falso
+         para x <- 1 ate 100 faca
+            se cirurgiao_valido = falso entao
+               escreval ("Informe a quantidade de CIRURGIÕES:")
+               leia(cirurgiao3)
+               se (cirurgiao3 >= 1) e (cirurgiao3 <= 2) entao
+                  cirurgiao_valido <- verdadeiro
+                  escreval ("")
+                  escreval ("==================================")
+                  escreval ("CIRURGIÕES do turno da NOITE: ", cirurgiao3)
+                  escreval ("==================================")
+                  escreval ("")
+               senao
+                  escreval ("")
+                  escreval ("==================================")
+                  escreval ("Quantidade de CIRURGIÕES inválida.")
+                  escreval ("Digite um número de 1 a 2.")
+                  escreval ("==================================")
+                  escreval ("")
+               fimse
+            fimse
+         fimpara
+
          escreval ("")
-         escreval ("PRESSIONE ENTER PARA CONTINUAR.")
-         leia (z)
+         escreval ("Digite ENTER para continuar.")
+         leia(z)
          limpatela
       fimse
    fimpara
-   //quadro geral da situação dos 3 turnos
-   //turno da manhã
+
+   // Quadro Geral
    escreval ("======================")
    escreval ("Hospital Santa Helena")
    escreval ("=======MEDSHIFT=======")
    escreval ("")
+
+   // Turno da Manhã
    escreval ("=======================================")
-   escreval ("Quantidade de médicos do turno da ",turno1)
+   escreval ("Quantidade de médicos do turno da ", turno1)
    escreval ("")
    escreval ("-------------------")
-   escreval ("CLÍNICOS GERAIS: ",clinico1)
-   escreval ("PEDIATRAS: ",pediatra1)
-   escreval ("CIRURGIÕES: ",cirurgiao1)
-   escreval ("-------------------")
-   escreval ("")
-   escreval ("TURNO COBERTO!!!")
-   escreval ("=======================================")
-   //turno da tarde
-   escreval ("=======================================")
-   escreval ("Quantidade de médicos do turno da ",turno2)
-   escreval ("")
-   escreval ("-------------------")
-   escreval ("CLÍNICOS GERAIS: ",clinico2)
-   escreval ("PEDIATRAS: ",pediatra2)
-   escreval ("CIRURGIÕES: ",cirurgiao2)
+   escreval ("CLÍNICOS GERAIS: ", clinico1)
+   escreval ("PEDIATRAS: ", pediatra1)
+   escreval ("CIRURGIÕES: ", cirurgiao1)
    escreval ("-------------------")
    escreval ("")
    escreval ("TURNO COBERTO!!!")
    escreval ("=======================================")
-   //turno da noite
+   escreval ("")
+
+   // Turno da Tarde
    escreval ("=======================================")
-   Escreval ("Quantidade de médicos do turno da ",turno3)
+   escreval ("Quantidade de médicos do turno da ", turno2)
    escreval ("")
    escreval ("-------------------")
-   escreval ("CLÍNICOS GERAIS: ",clinico3)
-   escreval ("PEDIATRAS: ",pediatra3)
-   escreval ("CIRURGIÕES: ",cirurgiao3)
+   escreval ("CLÍNICOS GERAIS: ", clinico2)
+   escreval ("PEDIATRAS: ", pediatra2)
+   escreval ("CIRURGIÕES: ", cirurgiao2)
    escreval ("-------------------")
    escreval ("")
    escreval ("TURNO COBERTO!!!")
    escreval ("=======================================")
-fimalgoritmo
+   escreval ("")
+
+   // Turno da Noite
+   escreval ("=======================================")
+   escreval ("Quantidade de médicos do turno da ", turno3)
+   escreval ("")
+   escreval ("-------------------")
+   escreval ("CLÍNICOS GERAIS: ", clinico3)
+   escreval ("PEDIATRAS: ", pediatra3)
+   escreval ("CIRURGIÕES: ", cirurgiao3)
+   escreval ("-------------------")
+   escreval ("")
+   escreval ("TURNO COBERTO!!!")
+   escreval ("=======================================")
+
+Fimalgoritmo
