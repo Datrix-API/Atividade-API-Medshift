@@ -45,3 +45,13 @@ VisualG
 Trello
 
 Esta Sprint representa a etapa inicial do sistema. As próximas Sprints irão adicionar novas funcionalidades.
+
+## Integrantes
+
+Gabriel Cardoso 
+Shamuel Viana
+Pedro Brumatti 
+Lucas Gabriel 
+Luciano Paiva
+Ygor Rodolfo 
+Davi Reis 
