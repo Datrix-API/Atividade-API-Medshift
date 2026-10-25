@@ -29,11 +29,18 @@ var
    //opContEscalacao: guarda a opção de escolha do usuário quando perguntado
    //se quer escalar mais médicos
    opContEscalacao: inteiro
+   //vetor para analise de medico ja escalado
+   escalados: vetor[1..24] de logico
+   jaEscalado: logico
 
 inicio
    totalCadastrados <- 0
    maxMedicos <- 24
    opcao <- 0
+   //adição da condição caso o medico ja esteja escalado
+   para i de 1 ate 24 faca
+      escalados[i] <- falso
+   fimpara
 
    enquanto opcao <> 4 faca
       escreval("")
@@ -202,7 +209,7 @@ inicio
          limpatela
          escreval ("ESCALAÇÃO DE MÉDICOS")
          se totalCadastrados = 0 entao
-            escreval("Nenhum medico cadastrado ate o momento.")
+            escreval ("Nenhum medico cadastrado ate o momento.")
          senao
             opContEscalacao <- 1
             enquanto opContEscalacao = 1 faca
@@ -225,93 +232,161 @@ inicio
                      posicao <- i
                   fimse
                fimpara
+
+               // só consulta o vetor se o médico existe (posicao > 0)
+               jaEscalado <- falso
                se encontrado entao
-                  escreval ("Em qual plantão deseja cadastrar o médico",idBusca,"?")
-                  escreval ("1. Manhã")
-                  escreval ("2. Tarde")
-                  escreval ("3. Noite")
-                  escreval ("4. Manhã/Tarde")
-                  escreval ("5. Manhã/Noite")
-                  escreval ("6. Tarde/Noite")
-                  opTurno <- 0
-                  enquanto (opTurno < 1) ou (opTurno > 6) faca
-                     escreva ("Opção: ")
-                     leia (opTurno)
-                     se (opTurno < 1) ou (opTurno > 6) entao
-                        escreval ("[ERRO] Escolha uma opção de 1 a 6.")
-                     fimse
-                  fimenquanto
-                  dispTemp <- disponibilidades[posicao]
-                  validoDispTurno <- falso
-                  se (dispTemp = "Manhã") e (opTurno = 1) entao
-                     validoDispTurno <- verdadeiro
-                  fimse
-                  se (dispTemp = "Tarde") e (opTurno = 2) entao
-                     validoDispTurno <- verdadeiro
-                  fimse
-                  se (dispTemp = "Noite") e (opTurno = 3) entao
-                     validoDispTurno <- verdadeiro
-                  fimse
-                  se (dispTemp = "Manhã/Tarde") e ((opTurno = 1) ou (opTurno = 2) ou (opTurno = 4)) entao
-                     validoDispTurno <- verdadeiro
-                  fimse
-                  se (dispTemp = "Manhã/Noite") e ((opTurno = 1) ou (opTurno = 3) ou (opTurno = 5)) entao
-                     validoDispTurno <- verdadeiro
-                  fimse
-                  se (dispTemp = "Tarde/Noite") e ((opTurno = 2) ou (opTurno = 3) ou (opTurno = 6)) entao
-                     validoDispTurno <- verdadeiro
-                  fimse
-                  se validoDispTurno entao
-                     escreval ("Médico escalado!")
+                  jaEscalado <- escalados[posicao]
+               fimse
+
+               se encontrado entao
+                  se jaEscalado entao
+                     limpatela
+                     escreval ("[ERRO] O médico ", idBusca, " já foi escalado!")
                      escreval ("")
-                     escreval ("Qual especialidade do médico?")
-                     escreval ("1. Clínico Geral")
-                     escreval ("2. Pediatra")
-                     escreval ("3. Cirurgião")
-                     opEsp <- 0
-                     enquanto (opEsp < 1) ou (opEsp > 3) faca
-                        escreva("Opcao: ")
-                        leia(opEsp)
-                        se (opEsp < 1) ou (opEsp > 3) entao
-                           escreval("[ERRO] Opcao invalida! Escolha 1, 2 ou 3.")
+                     escreval ("Deseja escalar mais médicos?")
+                     escreval ("1. Sim")
+                     escreval ("2. Nao")
+                     escreval ("")
+                     leia (opContEscalacao)
+
+                     enquanto (opContEscalacao < 1) ou (opContEscalacao > 2) faca
+                        escreval ("ERRO! Opção inválida. Escolha 1 ou 2.")
+                        escreva ("Opção: ")
+                        leia (opContEscalacao)
+                     fimenquanto
+                     limpatela
+                  senao
+                     escreval ("Em qual plantão deseja cadastrar o médico",idBusca,"?")
+                     escreval ("1. Manhã")
+                     escreval ("2. Tarde")
+                     escreval ("3. Noite")
+                     escreval ("4. Manhã/Tarde")
+                     escreval ("5. Manhã/Noite")
+                     escreval ("6. Tarde/Noite")
+                     opTurno <- 0
+                     enquanto (opTurno < 1) ou (opTurno > 6) faca
+                        escreva ("Opção: ")
+                        leia (opTurno)
+                        se (opTurno < 1) ou (opTurno > 6) entao
+                           escreval ("[ERRO] Escolha uma opção de 1 a 6.")
                         fimse
                      fimenquanto
-                     espTemp <- especialidades[posicao]
-                     validoEsp <- falso
-                     se (espTemp = "Clínico Geral") e (opEsp = 1) entao
-                        validoEsp <- verdadeiro
+                     dispTemp <- disponibilidades[posicao]
+                     validoDispTurno <- falso
+                     se (dispTemp = "Manhã") e (opTurno = 1) entao
+                        validoDispTurno <- verdadeiro
                      fimse
-                     se (espTemp = "Pediatra") e (opEsp = 2) entao
-                        validoEsp <- verdadeiro
+                     se (dispTemp = "Tarde") e (opTurno = 2) entao
+                        validoDispTurno <- verdadeiro
                      fimse
-                     se (espTemp = "Cirurgião") e (opEsp = 3) entao
-                        validoEsp <- verdadeiro
+                     se (dispTemp = "Noite") e (opTurno = 3) entao
+                        validoDispTurno <- verdadeiro
                      fimse
-                     se validoEsp entao
-                        escreval ("Médico escalado!")
-                        escreval("")
-                        escreval("Deseja escalar mais médicos?")
-                        escreval("1. Sim")
-                        escreval("2. Nao")
-                        escreval("")
-                        leia(opContEscalacao)
+                     se (dispTemp = "Manhã/Tarde") e ((opTurno = 1) ou (opTurno = 2) ou (opTurno = 4)) entao
+                        validoDispTurno <- verdadeiro
+                     fimse
+                     se (dispTemp = "Manhã/Noite") e ((opTurno = 1) ou (opTurno = 3) ou (opTurno = 5)) entao
+                        validoDispTurno <- verdadeiro
+                     fimse
+                     se (dispTemp = "Tarde/Noite") e ((opTurno = 2) ou (opTurno = 3) ou (opTurno = 6)) entao
+                        validoDispTurno <- verdadeiro
+                     fimse
+                     se validoDispTurno entao
+                        escreval ("")
+                        escreval ("Qual especialidade do médico?")
+                        escreval ("1. Clínico Geral")
+                        escreval ("2. Pediatra")
+                        escreval ("3. Cirurgião")
+                        opEsp <- 0
+                        enquanto (opEsp < 1) ou (opEsp > 3) faca
+                           escreva("Opcao: ")
+                           leia(opEsp)
+                           se (opEsp < 1) ou (opEsp > 3) entao
+                              escreval("[ERRO] Opcao invalida! Escolha 1, 2 ou 3.")
+                           fimse
+                        fimenquanto
+                        espTemp <- especialidades[posicao]
+                        validoEsp <- falso
+                        se (espTemp = "Clínico Geral") e (opEsp = 1) entao
+                           validoEsp <- verdadeiro
+                        fimse
+                        se (espTemp = "Pediatra") e (opEsp = 2) entao
+                           validoEsp <- verdadeiro
+                        fimse
+                        se (espTemp = "Cirurgião") e (opEsp = 3) entao
+                           validoEsp <- verdadeiro
+                        fimse
+                        se validoEsp entao
+                           ///// marca o médico como escalado
+                           escalados[posicao] <- verdadeiro
+                           escreval ("Médico escalado!")
+                           escreval("")
+                           escreval("Deseja escalar mais médicos?")
+                           escreval("1. Sim")
+                           escreval("2. Nao")
+                           escreval("")
+                           leia(opContEscalacao)
+
+                           enquanto (opContEscalacao < 1) ou (opContEscalacao > 2) faca
+                              escreval("ERRO! Opção inválida. Escolha 1 ou 2.")
+                              escreva("Opção: ")
+                              leia(opContEscalacao)
+                           fimenquanto
+                           limpatela
+                        senao
+                           escreval ("[ERRO] O médico não pode atuar nessa especialidade.")
+                           escreval ("")
+                           escreval ("Deseja escalar mais médicos?")
+                           escreval ("1. Sim")
+                           escreval ("2. Nao")
+                           escreval ("")
+                           leia (opContEscalacao)
+                           enquanto (opContEscalacao < 1) ou (opContEscalacao > 2) faca
+                              escreval("ERRO! Opção inválida. Escolha 1 ou 2.")
+                              escreva("Opção: ")
+                              leia(opContEscalacao)
+                           fimenquanto
+                           limpatela
+                        fimse
+                     senao
+                        escreval ("[ERRO] O médico não tem disponibilidade para este turno.")
+                     senao
+                        limpatela
+                        escreval ("[ERRO] O médico não tem disponibilidade para este turno.")
+                        escreval ("")
+                        escreval ("Deseja escalar mais médicos?")
+                        escreval ("1. Sim")
+                        escreval ("2. Nao")
+                        escreval ("")
+                        leia (opContEscalacao)
 
                         enquanto (opContEscalacao < 1) ou (opContEscalacao > 2) faca
-                           escreval("ERRO! Opção inválida. Escolha 1 ou 2.")
-                           escreva("Opção: ")
-                           leia(opContEscalacao)
+                           escreval ("ERRO! Opção inválida. Escolha 1 ou 2.")
+                           escreva ("Opção: ")
+                           leia (opContEscalacao)
                         fimenquanto
-                     senao
-                        escreval ("[ERRO] O médico não pode atuar nessa especialidade.")
+                        limpatela
                      fimse
-                  senao
-                     escreval ("[ERRO] O médico não tem disponibilidade para este turno.")
                   fimse
                senao
-                  escreval("Medico com identificador ", idBusca, " nao encontrado.")
+                  limpatela
+                  escreval ("[ERRO] Não existe médico cadastrado com este identificador.")
+                  escreval ("")
+                  escreval ("Deseja escalar mais médicos?")
+                  escreval ("1. Sim")
+                  escreval ("2. Nao")
+                  escreval ("")
+                  leia (opContEscalacao)
+
+                  enquanto (opContEscalacao < 1) ou (opContEscalacao > 2) faca
+                     escreval ("ERRO! Opção inválida. Escolha 1 ou 2.")
+                     escreva ("Opção: ")
+                     leia (opContEscalacao)
+                  fimenquanto
+                  limpatela
                fimse
             fimenquanto
-            limpatela
          fimse
       fimse
 
