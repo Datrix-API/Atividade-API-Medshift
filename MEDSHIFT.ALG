@@ -569,23 +569,5 @@ inicio
 
    fimenquanto
 
-fimalgoritmo
 
-      
-      
-      
-      
-      
-      
-      
-      
-      // opção 5: Sair
-      se opcao = 5 entao
-         escreval("Encerrando o programa...")
-      fimse
-
-      se (opcao < 1) ou (opcao > 4) entao
-         escreval("Opção inválida! Tente novamente.")
-      fimse
-   fimenquanto
 fimalgoritmo
