@@ -95,7 +95,7 @@ O desenvolvimento do projeto MEDSHIFT será organizado em três sprints, permiti
 
 ### Documentos
 
-- [Product Backlog](https://github.com/Datrix-API/Atividade-APIMedshift/blob/main/MedShift%20%20DATRIX%20Backlog%20EDIT.xlsx)
+- [Product Backlog](https://github.com/Datrix-API/Atividade-API-Medshift/blob/main/MedShift%20-%20DATRIX%20Backlog%20EDIT.xlsx)
 - [Documentação da Sprint 1](./documents/Product/sprints/sprint-1/README.md)
 - [Documentação da Sprint 2](./documents/Product/sprints/sprint-2/README.md)
 <!-- - [Documentação da Sprint 3](./documents/Product/sprints/sprint-3/README.md) -->
