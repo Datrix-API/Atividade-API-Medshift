@@ -25,6 +25,9 @@ var
    validoDispTurno, validoEsp: logico
    turnoCompativel: logico
 
+   opDiaSemana: inteiro
+   diaSemana: caracter
+
 inicio
 
    totalCadastrados <- 0
@@ -47,12 +50,13 @@ inicio
       escreval("5. Sair")
       escreva("Escolha uma opcao: ")
       leia(opcao)
+      escolha(opcao)
 
-      // =====================================
-      // OPCAO 1 - CADASTRAR MEDICO
-      // =====================================
+         // =====================================
+         // OPCAO 1 - CADASTRAR MEDICO
+         // =====================================
 
-      se opcao = 1 entao
+      caso 1
 
          opContCadastro <- 1
 
@@ -118,15 +122,16 @@ inicio
                      escreval("4. Manha/Tarde")
                      escreval("5. Manha/Noite")
                      escreval("6. Tarde/Noite")
+                     escreval("7. Manha/Tarde/Noite")
 
                      opTurno <- 0
 
-                     enquanto (opTurno < 1) ou (opTurno > 6) faca
+                     enquanto (opTurno < 1) ou (opTurno > 7) faca
                         escreva("Opcao: ")
                         leia(opTurno)
 
-                        se (opTurno < 1) ou (opTurno > 6) entao
-                           escreval("[ERRO] Escolha de 1 a 6.")
+                        se (opTurno < 1) ou (opTurno > 7) entao
+                           escreval("[ERRO] Escolha de 1 a 7.")
                         fimse
                      fimenquanto
 
@@ -174,6 +179,10 @@ inicio
                         disponibilidades[totalCadastrados] <- "Tarde/Noite"
                      fimse
 
+                     se opTurno = 7 entao
+                        disponibilidades[totalCadastrados] <- "Manha/Tarde/Noite"
+                     fimse
+
                      escalados[totalCadastrados] <- falso
                      turnosEscalados[totalCadastrados] <- 0
 
@@ -199,13 +208,11 @@ inicio
 
          limpatela
 
-      fimse
+         // =====================================
+         // OPCAO 2 - CONSULTAR MEDICO
+         // =====================================
 
-      // =====================================
-      // OPCAO 2 - CONSULTAR MEDICO
-      // =====================================
-
-      se opcao = 2 entao
+      caso 2
 
          limpatela
          escreval("=== CONSULTA DE MEDICO ===")
@@ -267,13 +274,12 @@ inicio
 
             fimse
          fimse
-      fimse
 
-      // =====================================
-      // OPCAO 3 - ESCALAR MEDICO
-      // =====================================
+         // =====================================
+         // OPCAO 3 - ESCALAR MEDICO
+         // =====================================
 
-      se opcao = 3 entao
+      caso 3
 
          limpatela
          escreval("=== ESCALACAO DE MEDICOS ===")
@@ -323,104 +329,131 @@ inicio
 
                se encontrado entao
 
-                  jaEscalado <- escalados[posicao]
+                  escreval("")
+                  escreval("Escolha o dia da semana:")
+                  escreval("1. Segunda-feira")
+                  escreval("2. Terça-feira")
+                  escreval("3. Quarta-feira")
+                  escreval("4. Quinta-feira")
+                  escreval("5. Sexta-feira")
 
-                  se jaEscalado entao
+                  opDiaSemana <- 0
 
-                     escreval("[ERRO] Medico ja escalado!")
+                  enquanto (opDiaSemana < 1) ou (opDiaSemana > 5) faca
+                     escreva ("Opcao: ")
+                     leia (opDiaSemana)
+                     se (opDiaSemana < 1) ou (opDiaSemana > 5) entao
+                        escreval("[ERRO] Escolha de 1 a 5.")
+                     fimse
+                  fimenquanto
 
-                  senao
+                  se opDiaSemana = 1 entao
+                     diaSemana <- "Segunda-feira"
+                  fimse
+                  se opDiaSemana = 2 entao
+                     diaSemana <- "Terça-feira"
+                  fimse
+                  se opDiaSemana = 3 entao
+                     diaSemana <- "Quarta-feira"
+                  fimse
+                  se opDiaSemana = 4 entao
+                     diaSemana <- "Quinta-feira"
+                  fimse
+                  se opDiaSemana = 5 entao
+                     diaSemana <- "Sexta-feira"
+                  fimse
+
+                  escreval("")
+                  escreval("Escolha o turno do plantao:")
+                  escreval("1. Manha")
+                  escreval("2. Tarde")
+                  escreval("3. Noite")
+
+                  opTurno <- 0
+
+                  enquanto (opTurno < 1) ou (opTurno > 3) faca
+                     escreva("Opcao: ")
+                     leia(opTurno)
+
+                     se (opTurno < 1) ou (opTurno > 3) entao
+                        escreval("[ERRO] Escolha de 1 a 3.")
+                     fimse
+                  fimenquanto
+
+                  validoDispTurno <- falso
+
+                  se codDisponibilidades[posicao] = opTurno entao
+                     validoDispTurno <- verdadeiro
+                  fimse
+
+                  se codDisponibilidades[posicao] = 4 entao
+                     se (opTurno = 1) ou (opTurno = 2) entao
+                        validoDispTurno <- verdadeiro
+                     fimse
+                  fimse
+
+                  se codDisponibilidades[posicao] = 5 entao
+                     se (opTurno = 1) ou (opTurno = 3) entao
+                        validoDispTurno <- verdadeiro
+                     fimse
+                  fimse
+
+                  se codDisponibilidades[posicao] = 6 entao
+                     se (opTurno = 2) ou (opTurno = 3) entao
+                        validoDispTurno <- verdadeiro
+                     fimse
+                  fimse
+
+                  se codDisponibilidades[posicao] = 7 entao
+                     se (opTurno = 1) ou (opTurno = 2) ou (opTurno = 3) entao
+                        validoDispTurno <- verdadeiro
+                     fimse
+                  fimse
+
+                  se validoDispTurno entao
 
                      escreval("")
-                     escreval("Escolha o turno do plantao:")
-                     escreval("1. Manha")
-                     escreval("2. Tarde")
-                     escreval("3. Noite")
-                     escreval("4. Manha/Tarde")
-                     escreval("5. Manha/Noite")
-                     escreval("6. Tarde/Noite")
+                     escreval("Escolha a especialidade:")
+                     escreval("1. Clinico Geral")
+                     escreval("2. Pediatra")
+                     escreval("3. Cirurgiao")
 
-                     opTurno <- 0
+                     opEsp <- 0
 
-                     enquanto (opTurno < 1) ou (opTurno > 6) faca
+                     enquanto (opEsp < 1) ou (opEsp > 3) faca
                         escreva("Opcao: ")
-                        leia(opTurno)
+                        leia(opEsp)
 
-                        se (opTurno < 1) ou (opTurno > 6) entao
-                           escreval("[ERRO] Escolha de 1 a 6.")
+                        se (opEsp < 1) ou (opEsp > 3) entao
+                           escreval("[ERRO] Escolha 1, 2 ou 3.")
                         fimse
                      fimenquanto
 
-                     validoDispTurno <- falso
+                     validoEsp <- falso
 
-                     se codDisponibilidades[posicao] = opTurno entao
-                        validoDispTurno <- verdadeiro
+                     se codEspecialidades[posicao] = opEsp entao
+                        validoEsp <- verdadeiro
                      fimse
 
-                     se codDisponibilidades[posicao] = 4 entao
-                        se (opTurno = 1) ou (opTurno = 2) entao
-                           validoDispTurno <- verdadeiro
-                        fimse
-                     fimse
+                     se validoEsp entao
 
-                     se codDisponibilidades[posicao] = 5 entao
-                        se (opTurno = 1) ou (opTurno = 3) entao
-                           validoDispTurno <- verdadeiro
-                        fimse
-                     fimse
-
-                     se codDisponibilidades[posicao] = 6 entao
-                        se (opTurno = 2) ou (opTurno = 3) entao
-                           validoDispTurno <- verdadeiro
-                        fimse
-                     fimse
-
-                     se validoDispTurno entao
+                        escalados[posicao] <- verdadeiro
+                        turnosEscalados[posicao] <- opTurno
 
                         escreval("")
-                        escreval("Escolha a especialidade:")
-                        escreval("1. Clinico Geral")
-                        escreval("2. Pediatra")
-                        escreval("3. Cirurgiao")
-
-                        opEsp <- 0
-
-                        enquanto (opEsp < 1) ou (opEsp > 3) faca
-                           escreva("Opcao: ")
-                           leia(opEsp)
-
-                           se (opEsp < 1) ou (opEsp > 3) entao
-                              escreval("[ERRO] Escolha 1, 2 ou 3.")
-                           fimse
-                        fimenquanto
-
-                        validoEsp <- falso
-
-                        se codEspecialidades[posicao] = opEsp entao
-                           validoEsp <- verdadeiro
-                        fimse
-
-                        se validoEsp entao
-
-                           escalados[posicao] <- verdadeiro
-                           turnosEscalados[posicao] <- opTurno
-
-                           escreval("")
-                           escreval("[SUCESSO] Medico escalado!")
-                           escreval("Nome: ", nomes[posicao])
-                           escreval("Especialidade: ", especialidades[posicao])
-
-                        senao
-
-                           escreval("[ERRO] Medico nao atua nessa especialidade.")
-
-                        fimse
+                        escreval("[SUCESSO] Medico escalado!")
+                        escreval("Nome: ", nomes[posicao])
+                        escreval("Especialidade: ", especialidades[posicao])
 
                      senao
 
-                        escreval("[ERRO] Medico sem disponibilidade para esse turno.")
+                        escreval("[ERRO] Medico nao atua nessa especialidade.")
 
                      fimse
+
+                  senao
+
+                     escreval("[ERRO] Medico sem disponibilidade para esse turno.")
 
                   fimse
 
@@ -431,7 +464,7 @@ inicio
                fimse
 
                escreval("")
-               escreval("Deseja escalar mais medicos?")
+               escreval("Deseja continuar a escalação?")
                escreval("1. Sim")
                escreval("2. Nao")
                leia(opContEscalacao)
@@ -447,13 +480,11 @@ inicio
 
          fimse
 
-      fimse
+         // =====================================
+         // OPCAO 4 - CONSULTAR ESCALADOS
+         // =====================================
 
-      // =====================================
-      // OPCAO 4 - CONSULTAR ESCALADOS
-      // =====================================
-
-      se opcao = 4 entao
+      caso 4
 
          limpatela
 
@@ -571,20 +602,16 @@ inicio
             escreval("Nenhum medico escalado para esse filtro.")
          fimse
 
-      fimse
+         // =====================================
+         // OPCAO 5 - SAIR
+         // =====================================
 
-      // =====================================
-      // OPCAO 5 - SAIR
-      // =====================================
-
-      se opcao = 5 entao
+      caso 5
          escreval("Encerrando o programa...")
-      fimse
 
-      se (opcao < 1) ou (opcao > 5) entao
+      outrocaso
          escreval("[ERRO] Opcao invalida!")
-      fimse
-
+      fimescolha
    fimenquanto
 
 
