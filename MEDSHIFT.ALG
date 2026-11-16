@@ -28,6 +28,7 @@ var
    escala: vetor[1..24, 1..15] de logico
    coluna, colunaAnterior: inteiro
    cargaAtual: inteiro
+   qtdPlantoesDia: inteiro
    x: inteiro
    descansoValido: logico
 
@@ -441,74 +442,94 @@ inicio
 
                      se validoEsp entao
 
-                        // Identifica a posicao do plantao na matriz
+                        // calcula a coluna correspondente ao dia e turno
                         coluna <- ((opDiaSemana - 1) * 3) + opTurno
 
-                        // Verifica se o medico ja esta escalado nesse plantao
+                        // verifica se o medico ja esta nesse plantao
                         se escala[posicao,coluna] entao
 
                            escreval("[ERRO] Medico ja escalado nesse plantao.")
 
                         senao
 
-                           descansoValido <- verdadeiro
+                           qtdPlantoesDia <- 0
 
-                           // Verifica se esta sendo escalado para a manha
-                           // e se trabalhou na noite do dia anterior
-                           se (opTurno = 1) e (opDiaSemana > 1) entao
+                           // calcula a primeira coluna do dia
+                           coluna <- ((opDiaSemana - 1) * 3) + 1
 
-                              colunaAnterior <- ((opDiaSemana - 1) * 3)
+                           // conta os plantoes do medico nesse dia
+                           para x de coluna ate coluna + 2 faca
 
-                              se escala[posicao,colunaAnterior] entao
-                                 descansoValido <- falso
+                              se escala[posicao,x] entao
+                                 qtdPlantoesDia <- qtdPlantoesDia + 1
                               fimse
 
-                           fimse
+                           fimpara
 
-                           // Verifica se ja existe plantao de manha no
-                           // dia seguinte
-                           se (opTurno = 3) e (opDiaSemana < 5) entao
+                           se qtdPlantoesDia >= 2 entao
 
-                              colunaAnterior <- (opDiaSemana * 3) + 1
-
-                              se escala[posicao,colunaAnterior] entao
-                                 descansoValido <- falso
-                              fimse
-
-                           fimse
-
-                           se nao descansoValido entao
-
-                              escreval("[ERRO] Medico escalado para noite do dia anterior.")
-                              escreval("Escalacao para a manha nao permitida.")
+                              escreval("[ERRO] Medico ja possui 2 plantoes nesse dia.")
 
                            senao
 
-                              cargaAtual <- 0
+                              descansoValido <- verdadeiro
 
-                              para x de 1 ate 15 faca
+                              // verifica se trabalhou na noite anterior
+                              se (opTurno = 1) e (opDiaSemana > 1) entao
 
-                                 se escala[posicao,x] entao
-                                    cargaAtual <- cargaAtual + 1
+                                 colunaAnterior <- ((opDiaSemana - 1) * 3)
+
+                                 se escala[posicao,colunaAnterior] entao
+                                    descansoValido <- falso
                                  fimse
 
-                              fimpara
+                              fimse
 
-                              se cargaAtual >= 5 entao
+                              // impede escala noturna se ja estiver na manha seguinte
+                              se (opTurno = 3) e (opDiaSemana < 5) entao
 
-                                 escreval("[ERRO] Medico ja atingiu o limite de 5 plantoes semanais.")
+                                 colunaAnterior <- (opDiaSemana * 3) + 1
+
+                                 se escala[posicao,colunaAnterior] entao
+                                    descansoValido <- falso
+                                 fimse
+
+                              fimse
+
+                              se nao descansoValido entao
+
+                                 escreval("[ERRO] Conflito com o turno da noite/manhã do dia seguinte.")
 
                               senao
 
-                                 // Registra o plantao na matriz
-                                 escala[posicao,coluna] <- verdadeiro
+                                 // conta os plantoes da semana
+                                 para x de 1 ate 15 faca
 
-                                 escreval("")
-                                 escreval("[SUCESSO] Medico escalado!")
-                                 escreval("Nome: ", nomes[posicao])
-                                 escreval("Especialidade: ", especialidades[posicao])
-                                 escreval("Dia: ", diaSemana)
-                                 escreval("Plantoes na semana: ", cargaAtual + 1)
+                                    se escala[posicao,x] entao
+                                       cargaAtual <- cargaAtual + 1
+                                    fimse
+
+                                 fimpara
+
+                                 se cargaAtual >= 5 entao
+
+                                    escreval("[ERRO] Medico ja atingiu o limite de 5 plantoes semanais.")
+
+                                 senao
+
+                                    // registra o novo plantao
+                                    coluna <- ((opDiaSemana - 1) * 3) + opTurno
+
+                                    escala[posicao,coluna] <- verdadeiro
+
+                                    escreval("")
+                                    escreval("[SUCESSO] Medico escalado!")
+                                    escreval("Nome: ", nomes[posicao])
+                                    escreval("Especialidade: ", especialidades[posicao])
+                                    escreval("Plantoes no dia: ", qtdPlantoesDia + 1)
+                                    escreval("Plantoes na semana: ", cargaAtual + 1)
+
+                                 fimse
 
                               fimse
 
