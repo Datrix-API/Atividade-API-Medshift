@@ -44,7 +44,7 @@ inicio
       fimpara
    fimpara
 
-   enquanto opcao <> 5 faca
+   enquanto opcao <> 6 faca
 
       escreval("")
       escreval("=== SISTEMA DE ESCALA MEDICA ===")
@@ -52,7 +52,8 @@ inicio
       escreval("2. Consultar Medico por Identificador")
       escreval("3. Escalar Medico no Plantao")
       escreval("4. Consultar Medicos Escalados")
-      escreval("5. Sair")
+      escreval("5. Vizualizar Cobertura Semanal")
+      escreval("6. Sair")
       escreva("Escolha uma opcao: ")
       leia(opcao)
       escolha(opcao)
@@ -673,12 +674,85 @@ inicio
          se nao encontrado entao
             escreval("Nenhum medico escalado para esse filtro.")
          fimse
+         
+              //==============================
+              // OPcao 5 - Cobertura Semanal
+              //==============================
+
+               caso 5
+
+         limpatela
+         escreval("=== COBERTURA SEMANAL ===")
+         qtdPlantoes <- 0
+
+
+         para opDiaSemana de 1 ate 5 faca
+
+            escreval("")
+
+            se opDiaSemana = 1 entao
+               escreval("Segunda-feira")
+            fimse
+            se opDiaSemana = 2 entao
+               escreval("Terca-feira")
+            fimse
+            se opDiaSemana = 3 entao
+               escreval("Quarta-feira")
+            fimse
+            se opDiaSemana = 4 entao
+               escreval("Quinta-feira")
+            fimse
+            se opDiaSemana = 5 entao
+               escreval("Sexta-feira")
+            fimse
+
+            para turnoConsulta de 1 ate 3 faca
+
+               //Identifica o dia da semana e os turnos
+               coluna <- ((opDiaSemana - 1) * 3) + turnoConsulta
+               cargaAtual <- 0
+
+               //Percorre todos os medicos cadastrados, um por um
+               para i de 1 ate totalCadastrados faca
+                  //Verifica se esse medico esta escalado no plantao atual
+                  se escala[i,coluna] entao
+                     //soma 1 ao total de medicos desse plantao
+                     cargaAtual <- cargaAtual + 1
+                  fimse
+               fimpara
+
+               se turnoConsulta = 1 entao
+                  escreva("  Manha: ")
+               fimse
+               se turnoConsulta = 2 entao
+                  escreva("  Tarde: ")
+               fimse
+               se turnoConsulta = 3 entao
+                  escreva("  Noite: ")
+               fimse
+
+               se cargaAtual = 0 entao
+                  escreval("DESCOBERTO")
+                  qtdPlantoes <- qtdPlantoes + 1
+               senao
+                  escreval(cargaAtual, " medico(s)")
+               fimse
+
+            fimpara
+         fimpara
+
+         escreval("")
+         escreval("Plantoes descobertos: ", qtdPlantoes, " de 15")
+         escreval("")
+         escreva("Pressione ENTER para voltar ao menu...")
+         leia(nomeTemp)
+
 
          // =====================================
-         // OPCAO 5 - SAIR
+         // OPCAO 6 - SAIR
          // =====================================
 
-      caso 5
+      caso 6
          escreval("Encerrando o programa...")
 
       outrocaso
