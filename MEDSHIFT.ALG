@@ -503,15 +503,6 @@ inicio
 
                               senao
 
-                                 // conta os plantoes da semana
-                                 para x de 1 ate 15 faca
-
-                                    se escala[posicao,x] entao
-                                       cargaAtual <- cargaAtual + 1
-                                    fimse
-
-                                 fimpara
-
                                  se cargaAtual >= 5 entao
 
                                     escreval("[ERRO] Medico ja atingiu o limite de 5 plantoes semanais.")
