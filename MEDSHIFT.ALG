@@ -613,26 +613,6 @@ inicio
 
          fimenquanto
 
-         escreval("")
-         escreval("Escolha a especialidade:")
-         escreval("1. Clinico Geral")
-         escreval("2. Pediatra")
-         escreval("3. Cirurgiao")
-         escreval("4. Todas as especialidades")
-
-         espConsulta <- 0
-
-         enquanto (espConsulta < 1) ou (espConsulta > 4) faca
-
-            escreva("Opcao: ")
-            leia(espConsulta)
-
-            se (espConsulta < 1) ou (espConsulta > 4) entao
-               escreval("[ERRO] Escolha de 1 a 4.")
-            fimse
-
-         fimenquanto
-
          encontrado <- falso
 
          // Calcula a coluna do dia e turno escolhidos
@@ -645,18 +625,14 @@ inicio
 
             se escala[i,coluna] entao
 
-               se (codEspecialidades[i] = espConsulta) ou (espConsulta = 4) entao
+               escreval("---------------------------")
+               escreval("ID: ", identificadores[i])
+               escreval("Nome: ", nomes[i])
+               escreval("Especialidade: ", especialidades[i])
+               escreval("Disponibilidade: ", disponibilidades[i])
+               escreval("---------------------------")
 
-                  escreval("---------------------------")
-                  escreval("ID: ", identificadores[i])
-                  escreval("Nome: ", nomes[i])
-                  escreval("Especialidade: ", especialidades[i])
-                  escreval("Disponibilidade: ", disponibilidades[i])
-                  escreval("---------------------------")
-
-                  encontrado <- verdadeiro
-
-               fimse
+               encontrado <- verdadeiro
 
             fimse
 
@@ -665,12 +641,12 @@ inicio
          se nao encontrado entao
             escreval("Nenhum medico escalado para esse filtro.")
          fimse
-         
-              //==============================
-              // OPcao 5 - Cobertura Semanal
-              //==============================
 
-               caso 5
+         //==============================
+         // OPcao 5 - Cobertura Semanal
+         //==============================
+
+      caso 5
 
          limpatela
          escreval("=== COBERTURA SEMANAL ===")
