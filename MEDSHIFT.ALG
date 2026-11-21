@@ -47,7 +47,7 @@ inicio
       fimpara
    fimpara
 
-   enquanto opcao <> 6 faca
+   enquanto opcao <> 7 faca
 
       escreval("")
       escreval("=== SISTEMA DE ESCALA MEDICA ===")
@@ -56,7 +56,8 @@ inicio
       escreval("3. Escalar Medico no Plantao")
       escreval("4. Consultar Medicos Escalados")
       escreval("5. Vizualizar Cobertura Semanal")
-      escreval("6. Sair")
+      escreval("6. Resumo da Escala Semanal")
+      escreval("7. Sair")
       escreva("Escolha uma opcao: ")
       leia(opcao)
       escolha(opcao)
@@ -762,18 +763,11 @@ escreval("Cobertura semanal: ", ((vagasSemana * 100) / 60):0:2, "%")
          escreva("Pressione ENTER para voltar ao menu...")
          leia(nomeTemp)
 
-
-         // =====================================
-         // OPCAO 6 - SAIR
+          // =====================================
+         // OPCAO 6 - RESUMO DOS 5 DIAS
          // =====================================
 
       caso 6
-         escreval("Encerrando o programa...")
-            // =====================================
-         // OPCAO 7 - RESUMO DOS 5 DIAS
-         // =====================================
-
-      caso 7
 
          limpatela
          escreval("=== RESUMO DOS 5 DIAS DA SEMANA ===")
@@ -925,6 +919,14 @@ escreval("Cobertura semanal: ", ((vagasSemana * 100) / 60):0:2, "%")
          escreval("")
          escreva("Pressione ENTER para voltar ao menu...")
          leia(nomeTemp)
+         
+         // =====================================
+         // OPCAO 7 - SAIR
+         // =====================================
+
+      caso 7
+         escreval("Encerrando o programa...")
+
       outrocaso
          escreval("[ERRO] Opcao invalida!")
       fimescolha
