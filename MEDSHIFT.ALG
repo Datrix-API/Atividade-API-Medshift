@@ -650,13 +650,13 @@ inicio
          // OPcao 5 - Cobertura Semanal
          //==============================
 
-      caso 5
+            caso 5
 
          limpatela
          escreval("=== COBERTURA SEMANAL ===")
          qtdPlantoes <- 0
          vagasSemana <- 0
-plantoesCompletos <- 0
+         plantoesCompletos <- 0
 
 
          para opDiaSemana de 1 ate 5 faca
@@ -685,9 +685,9 @@ plantoesCompletos <- 0
                coluna <- ((opDiaSemana - 1) * 3) + turnoConsulta
                cargaAtual <- 0
                qtdClinicos <- 0
-qtdPediatras <- 0
-qtdCirurgioes <- 0
-vagasPreenchidas <- 0
+               qtdPediatras <- 0
+               qtdCirurgioes <- 0
+               vagasPreenchidas <- 0
 
                //Percorre todos os medicos cadastrados, um por um
                para i de 1 ate totalCadastrados faca
@@ -696,34 +696,37 @@ vagasPreenchidas <- 0
                      //soma 1 ao total de medicos desse plantao
                      cargaAtual <- cargaAtual + 1
                      se codEspecialidades[i] = 1 entao
-   qtdClinicos <- qtdClinicos + 1
-fimse
+                        qtdClinicos <- qtdClinicos + 1
+                     fimse
 
-se codEspecialidades[i] = 2 entao
-   qtdPediatras <- qtdPediatras + 1
-fimse
+                     se codEspecialidades[i] = 2 entao
+                        qtdPediatras <- qtdPediatras + 1
+                     fimse
 
-se codEspecialidades[i] = 3 entao
-   qtdCirurgioes <- qtdCirurgioes + 1
-fimse
+                     se codEspecialidades[i] = 3 entao
+                        qtdCirurgioes <- qtdCirurgioes + 1
+                     fimse
                   fimse
                fimpara
-               // Conta no maximo 2 clinicos gerais
-se qtdClinicos >= 2 entao
-   vagasPreenchidas <- vagasPreenchidas + 2
-senao
-   vagasPreenchidas <- vagasPreenchidas + qtdClinicos
-fimse
-// Conta no maximo 1 pediatra
-se qtdPediatras >= 1 entao
-   vagasPreenchidas <- vagasPreenchidas + 1
-fimse
 
-// Conta no maximo 1 cirurgiao
-se qtdCirurgioes >= 1 entao
-   vagasPreenchidas <- vagasPreenchidas + 1
-fimse
-vagasSemana <- vagasSemana + vagasPreenchidas
+               // Conta no maximo 2 clinicos gerais
+               se qtdClinicos >= 2 entao
+                  vagasPreenchidas <- vagasPreenchidas + 2
+               senao
+                  vagasPreenchidas <- vagasPreenchidas + qtdClinicos
+               fimse
+
+               // Conta no maximo 1 pediatra
+               se qtdPediatras >= 1 entao
+                  vagasPreenchidas <- vagasPreenchidas + 1
+               fimse
+
+               // Conta no maximo 1 cirurgiao
+               se qtdCirurgioes >= 1 entao
+                  vagasPreenchidas <- vagasPreenchidas + 1
+               fimse
+
+               vagasSemana <- vagasSemana + vagasPreenchidas
 
                se turnoConsulta = 1 entao
                   escreva("  Manha: ")
@@ -741,13 +744,15 @@ vagasSemana <- vagasSemana + vagasPreenchidas
                senao
                   escreval(cargaAtual, " medico(s)")
                fimse
+
                escreval("    Cobertura: ", (vagasPreenchidas * 100) / 4, "%")
+
                se vagasPreenchidas = 4 entao
-   escreval("    Situacao: COMPLETO")
-   plantoesCompletos <- plantoesCompletos + 1
-senao
-   escreval("    Situacao: INCOMPLETO")
-fimse
+                  escreval("    Situacao: COMPLETO")
+                  plantoesCompletos <- plantoesCompletos + 1
+               senao
+                  escreval("    Situacao: INCOMPLETO")
+               fimse
 
             fimpara
          fimpara
@@ -755,9 +760,9 @@ fimse
          escreval("")
          escreval("Plantoes descobertos: ", qtdPlantoes, " de 15")
          escreval("Plantoes completos: ", plantoesCompletos, " de 15")
-escreval("Plantoes incompletos: ", 15 - plantoesCompletos, " de 15")
-escreval("Vagas preenchidas: ", vagasSemana, " de 60")
-escreval("Cobertura semanal: ", ((vagasSemana * 100) / 60):0:2, "%")
+         escreval("Plantoes incompletos: ", 15 - plantoesCompletos, " de 15")
+         escreval("Vagas preenchidas: ", vagasSemana, " de 60")
+         escreval("Cobertura semanal: ", ((vagasSemana * 100) / 60):0:2, "%")
 
          escreval("")
          escreva("Pressione ENTER para voltar ao menu...")
