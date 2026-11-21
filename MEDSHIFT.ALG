@@ -769,7 +769,162 @@ escreval("Cobertura semanal: ", ((vagasSemana * 100) / 60):0:2, "%")
 
       caso 6
          escreval("Encerrando o programa...")
+            // =====================================
+         // OPCAO 7 - RESUMO DOS 5 DIAS
+         // =====================================
 
+      caso 7
+
+         limpatela
+         escreval("=== RESUMO DOS 5 DIAS DA SEMANA ===")
+
+         se totalCadastrados = 0 entao
+
+            escreval("Nenhum medico cadastrado.")
+
+         senao
+
+            para opDiaSemana de 1 ate 5 faca
+
+               se opDiaSemana = 1 entao
+                  diaSemana <- "Segunda-feira"
+               fimse
+               se opDiaSemana = 2 entao
+                  diaSemana <- "Terca-feira"
+               fimse
+               se opDiaSemana = 3 entao
+                  diaSemana <- "Quarta-feira"
+               fimse
+               se opDiaSemana = 4 entao
+                  diaSemana <- "Quinta-feira"
+               fimse
+               se opDiaSemana = 5 entao
+                  diaSemana <- "Sexta-feira"
+               fimse
+
+               cargaManha <- 0
+               cargaTarde <- 0
+               cargaNoite <- 0
+
+               escreval("")
+               escreval("========================================")
+               escreval("DIA: ", diaSemana)
+               escreval("========================================")
+
+               para turnoConsulta de 1 ate 3 faca
+
+                  coluna <- ((opDiaSemana - 1) * 3) + turnoConsulta
+                  cargaAtual <- 0
+                  haEscaladoTurno <- falso
+
+                  escreval("")
+                  se turnoConsulta = 1 entao
+                     escreval("  --- Turno: Manha ---")
+                  fimse
+                  se turnoConsulta = 2 entao
+                     escreval("  --- Turno: Tarde ---")
+                  fimse
+                  se turnoConsulta = 3 entao
+                     escreval("  --- Turno: Noite ---")
+                  fimse
+
+                  para i de 1 ate totalCadastrados faca
+                     se escala[i,coluna] entao
+                        cargaAtual <- cargaAtual + 1
+                        haEscaladoTurno <- verdadeiro
+                        escreval("    * [ID ", identificadores[i], "] ", nomes[i], " - ", especialidades[i])
+                     fimse
+                  fimpara
+
+                  se nao haEscaladoTurno entao
+                     escreval("    (Nenhum medico escalado - DESCOBERTO)")
+                  fimse
+
+                  escreval("    Total no turno: ", cargaAtual, " medico(s)")
+
+                  se turnoConsulta = 1 entao
+                     cargaManha <- cargaAtual
+                  fimse
+                  se turnoConsulta = 2 entao
+                     cargaTarde <- cargaAtual
+                  fimse
+                  se turnoConsulta = 3 entao
+                     cargaNoite <- cargaAtual
+                  fimse
+
+               fimpara
+
+               maiorCargaDia <- cargaManha
+               se cargaTarde > maiorCargaDia entao
+                  maiorCargaDia <- cargaTarde
+               fimse
+               se cargaNoite > maiorCargaDia entao
+                  maiorCargaDia <- cargaNoite
+               fimse
+
+               menorCargaDia <- cargaManha
+               se cargaTarde < menorCargaDia entao
+                  menorCargaDia <- cargaTarde
+               fimse
+               se cargaNoite < menorCargaDia entao
+                  menorCargaDia <- cargaNoite
+               fimse
+
+               escreval("")
+               escreval("  --------------------------------------")
+               escreva("  Maior carga (", maiorCargaDia, " medico(s)): ")
+               primeiraExibicao <- verdadeiro
+
+               se cargaManha = maiorCargaDia entao
+                  escreva("Manha")
+                  primeiraExibicao <- falso
+               fimse
+               se cargaTarde = maiorCargaDia entao
+                  se nao primeiraExibicao entao
+                     escreva(", ")
+                  fimse
+                  escreva("Tarde")
+                  primeiraExibicao <- falso
+               fimse
+               se cargaNoite = maiorCargaDia entao
+                  se nao primeiraExibicao entao
+                     escreva(", ")
+                  fimse
+                  escreva("Noite")
+                  primeiraExibicao <- falso
+               fimse
+               escreval("")
+
+               escreva("  Menor carga (", menorCargaDia, " medico(s)): ")
+               primeiraExibicao <- verdadeiro
+
+               se cargaManha = menorCargaDia entao
+                  escreva("Manha")
+                  primeiraExibicao <- falso
+               fimse
+               se cargaTarde = menorCargaDia entao
+                  se nao primeiraExibicao entao
+                     escreva(", ")
+                  fimse
+                  escreva("Tarde")
+                  primeiraExibicao <- falso
+               fimse
+               se cargaNoite = menorCargaDia entao
+                  se nao primeiraExibicao entao
+                     escreva(", ")
+                  fimse
+                  escreva("Noite")
+                  primeiraExibicao <- falso
+               fimse
+               escreval("")
+
+            fimpara
+
+         fimse
+
+         escreval("")
+         escreva("Pressione ENTER para voltar ao menu...")
+         leia(nomeTemp)
       outrocaso
          escreval("[ERRO] Opcao invalida!")
       fimescolha
