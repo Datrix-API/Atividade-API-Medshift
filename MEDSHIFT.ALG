@@ -1,5 +1,6 @@
 algoritmo "SistemaEscalaMedica"
 
+
 var
    identificadores: vetor[1..24] de inteiro
    nomes: vetor[1..24] de caractere
@@ -29,12 +30,11 @@ var
    coluna, colunaAnterior: inteiro
    cargaAtual: inteiro
    qtdPlantoesDia: inteiro
+   qtdClinicos, qtdPediatras, qtdCirurgioes: inteiro
+   faltaClinicos, faltaPediatras, faltaCirurgioes: inteiro
    x: inteiro
    descansoValido: logico
 
-   qtdClinicos, qtdPediatras, qtdCirurgioes: inteiro
-   vagasPreenchidas, vagasSemana: inteiro
-   plantoesCompletos: inteiro
 inicio
 
    totalCadastrados <- 0
@@ -47,7 +47,7 @@ inicio
       fimpara
    fimpara
 
-   enquanto opcao <> 7 faca
+   enquanto opcao <> 6 faca
 
       escreval("")
       escreval("=== SISTEMA DE ESCALA MEDICA ===")
@@ -56,8 +56,7 @@ inicio
       escreval("3. Escalar Medico no Plantao")
       escreval("4. Consultar Medicos Escalados")
       escreval("5. Vizualizar Cobertura Semanal")
-      escreval("6. Resumo da Escala Semanal")
-      escreval("7. Sair")
+      escreval("6. Sair")
       escreva("Escolha uma opcao: ")
       leia(opcao)
       escolha(opcao)
@@ -298,32 +297,62 @@ inicio
 
                escreval("")
                escreval("=== MEDICOS CADASTRADOS ===")
+               escreval("ID   Especialidade   Disponibilidade     Plantoes  Nome")
+               escreval("------------------------------------------------------------")
 
                para i de 1 ate totalCadastrados faca
 
-                  escreval("---------------------------")
-                  escreval("ID: ", identificadores[i])
-                  escreval("Nome: ", nomes[i])
-                  escreval("Especialidade: ", especialidades[i])
-                  escreval("Disponibilidade: ", disponibilidades[i])
-
+                  // conta os plantoes do medico i
                   cargaAtual <- 0
-
                   para x de 1 ate 15 faca
                      se escala[i,x] entao
                         cargaAtual <- cargaAtual + 1
                      fimse
                   fimpara
 
-                  se cargaAtual > 0 entao
-                     escreval("Situacao: Ja possui ", cargaAtual, " plantao(s)")
-                  senao
-                     escreval("Situacao: Disponivel para escala")
+                  // coluna ID (largura 5)
+                  escreva(identificadores[i])
+                  se identificadores[i] < 10 entao
+                     escreva("    ")
                   fimse
+                  se (identificadores[i] >= 10) e (identificadores[i] < 100) entao
+                     escreva("   ")
+                  fimse
+                  se identificadores[i] >= 100 entao
+                     escreva("  ")
+                  fimse
+
+                  // coluna Especialidade (largura 16)
+                  escreva(especialidades[i])
+                  se codEspecialidades[i] = 1 entao
+                     escreva("   ")
+                  fimse
+                  se codEspecialidades[i] = 2 entao
+                     escreva("        ")
+                  fimse
+                  se codEspecialidades[i] = 3 entao
+                     escreva("       ")
+                  fimse
+
+                  // coluna Disponibilidade (largura 20)
+                  escreva(disponibilidades[i])
+                  se codDisponibilidades[i] <= 3 entao
+                     escreva("               ")
+                  fimse
+                  se (codDisponibilidades[i] >= 4) e (codDisponibilidades[i] <= 6) entao
+                     escreva("         ")
+                  fimse
+                  se codDisponibilidades[i] = 7 entao
+                     escreva("   ")
+                  fimse
+
+                  // coluna Plantoes (largura 10) e, por ultimo, o Nome
+                  escreva(cargaAtual, "         ")
+                  escreval(nomes[i])
 
                fimpara
 
-               escreval("---------------------------")
+               escreval("------------------------------------------------------------")
                escreva("Digite o ID do medico: ")
                leia(idBusca)
 
@@ -342,7 +371,7 @@ inicio
                   escreval("")
                   escreval("Escolha o dia da semana:")
                   escreval("1. Segunda-feira")
-                  escreval("2. Terï¿½a-feira")
+                  escreval("2. Terça-feira")
                   escreval("3. Quarta-feira")
                   escreval("4. Quinta-feira")
                   escreval("5. Sexta-feira")
@@ -361,7 +390,7 @@ inicio
                      diaSemana <- "Segunda-feira"
                   fimse
                   se opDiaSemana = 2 entao
-                     diaSemana <- "Terï¿½a-feira"
+                     diaSemana <- "Terça-feira"
                   fimse
                   se opDiaSemana = 3 entao
                      diaSemana <- "Quarta-feira"
@@ -454,40 +483,25 @@ inicio
                         se escala[posicao,coluna] entao
 
                            escreval("[ERRO] Medico ja escalado nesse plantao.")
-
                         senao
-
                            qtdPlantoesDia <- 0
-
-                           // calcula a primeira coluna do dia
                            coluna <- ((opDiaSemana - 1) * 3) + 1
-
-                           // conta os plantoes do medico nesse dia
                            para x de coluna ate coluna + 2 faca
 
                               se escala[posicao,x] entao
                                  qtdPlantoesDia <- qtdPlantoesDia + 1
                               fimse
-
                            fimpara
-
                            se qtdPlantoesDia >= 2 entao
-
                               escreval("[ERRO] Medico ja possui 2 plantoes nesse dia.")
-
                            senao
 
                               descansoValido <- verdadeiro
-
-                              // verifica se trabalhou na noite anterior
                               se (opTurno = 1) e (opDiaSemana > 1) entao
-
                                  colunaAnterior <- ((opDiaSemana - 1) * 3)
-
                                  se escala[posicao,colunaAnterior] entao
                                     descansoValido <- falso
                                  fimse
-
                               fimse
 
                               // impede escala noturna se ja estiver na manha seguinte
@@ -498,65 +512,40 @@ inicio
                                  se escala[posicao,colunaAnterior] entao
                                     descansoValido <- falso
                                  fimse
-
                               fimse
-
                               se nao descansoValido entao
-
-                                 escreval("[ERRO] Conflito com o turno da noite/manhï¿½ do dia seguinte.")
-
+                                 escreval("[ERRO] Conflito com o turno da noite/manhã do dia seguinte.")
                               senao
-
                                  se cargaAtual >= 5 entao
-
                                     escreval("[ERRO] Medico ja atingiu o limite de 5 plantoes semanais.")
-
                                  senao
-
                                     // registra o novo plantao
                                     coluna <- ((opDiaSemana - 1) * 3) + opTurno
-
                                     escala[posicao,coluna] <- verdadeiro
-
                                     escreval("")
                                     escreval("[SUCESSO] Medico escalado!")
                                     escreval("Nome: ", nomes[posicao])
                                     escreval("Especialidade: ", especialidades[posicao])
                                     escreval("Plantoes no dia: ", qtdPlantoesDia + 1)
                                     escreval("Plantoes na semana: ", cargaAtual + 1)
-
                                  fimse
-
                               fimse
-
                            fimse
-
                         fimse
-
                      senao
-
                         escreval("[ERRO] Medico nao atua nessa especialidade.")
-
                      fimse
-
                   senao
-
                      escreval("[ERRO] Medico sem disponibilidade para esse turno.")
-
                   fimse
-
                senao
-
                   escreval("[ERRO] Identificador nao encontrado.")
-
                fimse
-
                escreval("")
-               escreval("Deseja continuar a escalaï¿½ï¿½o?")
+               escreval("Deseja continuar a escalação?")
                escreval("1. Sim")
                escreval("2. Nao")
                leia(opContEscalacao)
-
                enquanto (opContEscalacao < 1) ou (opContEscalacao > 2) faca
                   escreval("[ERRO] Escolha 1 ou 2.")
                   leia(opContEscalacao)
@@ -565,7 +554,6 @@ inicio
                limpatela
 
             fimenquanto
-
          fimse
 
          // =====================================
@@ -579,7 +567,7 @@ inicio
          escreval("")
          escreval("Escolha o dia da semana:")
          escreval("1. Segunda-feira")
-         escreval("2. Terï¿½a-feira")
+         escreval("2. Terça-feira")
          escreval("3. Quarta-feira")
          escreval("4. Quinta-feira")
          escreval("5. Sexta-feira")
@@ -622,314 +610,210 @@ inicio
          // Calcula a coluna do dia e turno escolhidos
          coluna <- ((opDiaSemana - 1) * 3) + turnoConsulta
 
-         escreval("")
-         escreval("=== RESULTADO DA CONSULTA ===")
+         Escreval("")
+         Escreval("=== RESULTADO DA CONSULTA ===")
 
+         // primeiro conta quantos medicos estao nesse plantao
+         qtdPlantoes <- 0
          para i de 1 ate totalCadastrados faca
-
             se escala[i,coluna] entao
-
-               escreval("---------------------------")
-               escreval("ID: ", identificadores[i])
-               escreval("Nome: ", nomes[i])
-               escreval("Especialidade: ", especialidades[i])
-               escreval("Disponibilidade: ", disponibilidades[i])
-               escreval("---------------------------")
-
-               encontrado <- verdadeiro
-
+               qtdPlantoes <- qtdPlantoes + 1
             fimse
-
          fimpara
 
-         se nao encontrado entao
-            escreval("Nenhum medico escalado para esse filtro.")
-         fimse
+         se qtdPlantoes = 0 entao
 
+            Escreval("Nenhum medico escalado para esse filtro.")
+
+         senao
+
+            Escreval("ID   Especialidade   Disponibilidade     Nome")
+            Escreval("------------------------------------------------------------")
+
+            para i de 1 ate totalCadastrados faca
+
+               se escala[i,coluna] entao
+
+                  Escreva(identificadores[i])
+                  se identificadores[i] < 10 entao
+                     Escreva("    ")
+                  fimse
+                  se (identificadores[i] >= 10) e (identificadores[i] < 100) entao
+                     Escreva("   ")
+                  fimse
+                  se identificadores[i] >= 100 entao
+                     Escreva("  ")
+                  fimse
+
+                  escreva(especialidades[i])
+                  se codEspecialidades[i] = 1 entao
+                     Escreva("   ")
+                  fimse
+                  se codEspecialidades[i] = 2 entao
+                     Escreva("        ")
+                  fimse
+                  se codEspecialidades[i] = 3 entao
+                     Escreva("       ")
+                  fimse
+
+                  escreva(disponibilidades[i])
+                  se codDisponibilidades[i] <= 3 entao
+                     Escreva("               ")
+                  fimse
+                  se (codDisponibilidades[i] >= 4) e (codDisponibilidades[i] <= 6) entao
+                     Escreva("         ")
+                  fimse
+                  se codDisponibilidades[i] = 7 entao
+                     Escreva("   ")
+                  fimse
+
+                  Escreval(nomes[i])
+
+               fimse
+
+            fimpara
+
+            Escreval("------------------------------------------------------------")
+            Escreval("Total de medicos neste plantao: ", qtdPlantoes)
+
+         fimse
          //==============================
          // OPcao 5 - Cobertura Semanal
          //==============================
 
-            caso 5
+      caso 5
 
          limpatela
          escreval("=== COBERTURA SEMANAL ===")
+         escreval("")
+         escreval("Dia             Turno   Clin     Ped     Cir     Situacao")
+         escreval("---------------------------------------------------------------")
          qtdPlantoes <- 0
-         vagasSemana <- 0
-         plantoesCompletos <- 0
-
 
          para opDiaSemana de 1 ate 5 faca
 
-            escreval("")
-
             se opDiaSemana = 1 entao
-               escreval("Segunda-feira")
+               diaSemana <- "Segunda-feira"
             fimse
             se opDiaSemana = 2 entao
-               escreval("Terca-feira")
+               diaSemana <- "Terca-feira"
             fimse
             se opDiaSemana = 3 entao
-               escreval("Quarta-feira")
+               diaSemana <- "Quarta-feira"
             fimse
             se opDiaSemana = 4 entao
-               escreval("Quinta-feira")
+               diaSemana <- "Quinta-feira"
             fimse
             se opDiaSemana = 5 entao
-               escreval("Sexta-feira")
+               diaSemana <- "Sexta-feira"
             fimse
 
             para turnoConsulta de 1 ate 3 faca
 
-               //Identifica o dia da semana e os turnos
                coluna <- ((opDiaSemana - 1) * 3) + turnoConsulta
                cargaAtual <- 0
                qtdClinicos <- 0
                qtdPediatras <- 0
                qtdCirurgioes <- 0
-               vagasPreenchidas <- 0
 
-               //Percorre todos os medicos cadastrados, um por um
                para i de 1 ate totalCadastrados faca
-                  //Verifica se esse medico esta escalado no plantao atual
                   se escala[i,coluna] entao
-                     //soma 1 ao total de medicos desse plantao
                      cargaAtual <- cargaAtual + 1
                      se codEspecialidades[i] = 1 entao
                         qtdClinicos <- qtdClinicos + 1
                      fimse
-
                      se codEspecialidades[i] = 2 entao
                         qtdPediatras <- qtdPediatras + 1
                      fimse
-
                      se codEspecialidades[i] = 3 entao
                         qtdCirurgioes <- qtdCirurgioes + 1
                      fimse
                   fimse
                fimpara
 
-               // Conta no maximo 2 clinicos gerais
-               se qtdClinicos >= 2 entao
-                  vagasPreenchidas <- vagasPreenchidas + 2
-               senao
-                  vagasPreenchidas <- vagasPreenchidas + qtdClinicos
+               faltaClinicos <- 2 - qtdClinicos
+               faltaPediatras <- 1 - qtdPediatras
+               faltaCirurgioes <- 1 - qtdCirurgioes
+
+               se faltaClinicos < 0 entao
+                  faltaClinicos <- 0
+               fimse
+               se faltaPediatras < 0 entao
+                  faltaPediatras <- 0
+               fimse
+               se faltaCirurgioes < 0 entao
+                  faltaCirurgioes <- 0
                fimse
 
-               // Conta no maximo 1 pediatra
-               se qtdPediatras >= 1 entao
-                  vagasPreenchidas <- vagasPreenchidas + 1
+               // DIA - coluna com largura fixa de 16 caracteres
+               escreva(diaSemana)
+               se opDiaSemana = 1 entao
+                  escreva("   ")
+               fimse
+               se opDiaSemana = 2 entao
+                  escreva("     ")
+               fimse
+               se opDiaSemana = 3 entao
+                  escreva("    ")
+               fimse
+               se opDiaSemana = 4 entao
+                  escreva("    ")
+               fimse
+               se opDiaSemana = 5 entao
+                  escreva("     ")
                fimse
 
-               // Conta no maximo 1 cirurgiao
-               se qtdCirurgioes >= 1 entao
-                  vagasPreenchidas <- vagasPreenchidas + 1
-               fimse
-
-               vagasSemana <- vagasSemana + vagasPreenchidas
-
+               // TURNO - coluna com largura fixa de 8 caracteres
                se turnoConsulta = 1 entao
-                  escreva("  Manha: ")
+                  escreva("Manha   ")
                fimse
                se turnoConsulta = 2 entao
-                  escreva("  Tarde: ")
+                  escreva("Tarde   ")
                fimse
                se turnoConsulta = 3 entao
-                  escreva("  Noite: ")
+                  escreva("Noite   ")
                fimse
 
-               se cargaAtual = 0 entao
-                  escreval("DESCOBERTO")
+               // ESPECIALIDADES - colunas com largura fixa
+               escreva(qtdClinicos, "/2")
+               escreva("     ")
+               escreva(qtdPediatras, "/1")
+               escreva("     ")
+               escreva(qtdCirurgioes, "/1")
+               escreva("     ")
+
+               se (faltaClinicos = 0) e (faltaPediatras = 0) e (faltaCirurgioes = 0) entao
+                  escreva("COMPLETO")
+                  escreva("     ")
+               senao
                   qtdPlantoes <- qtdPlantoes + 1
-               senao
-                  escreval(cargaAtual, " medico(s)")
+                  se cargaAtual = 0 entao
+                     escreva("DESCOBERTO")
+                     escreva("   ")
+                  senao
+                     escreva("INCOMPLETO")
+                     escreva("   ")
+                  fimse
                fimse
 
-               escreval("    Cobertura: ", (vagasPreenchidas * 100) / 4, "%")
-
-               se vagasPreenchidas = 4 entao
-                  escreval("    Situacao: COMPLETO")
-                  plantoesCompletos <- plantoesCompletos + 1
-               senao
-                  escreval("    Situacao: INCOMPLETO")
-               fimse
+               escreval("")
 
             fimpara
          fimpara
 
-         escreval("")
-         escreval("Plantoes descobertos: ", qtdPlantoes, " de 15")
-         escreval("Plantoes completos: ", plantoesCompletos, " de 15")
-         escreval("Plantoes incompletos: ", 15 - plantoesCompletos, " de 15")
-         escreval("Vagas preenchidas: ", vagasSemana, " de 60")
-         escreval("Cobertura semanal: ", ((vagasSemana * 100) / 60):0:2, "%")
-
+         escreval("---------------------------------------------------------------")
+         escreval("Plantoes incompletos ou descobertos: ", qtdPlantoes, " de 15")
          escreval("")
          escreva("Pressione ENTER para voltar ao menu...")
          leia(nomeTemp)
+         limpatela
 
-          // =====================================
-         // OPCAO 6 - RESUMO DOS 5 DIAS
+
+         // =====================================
+         // OPCAO 6 - SAIR
          // =====================================
 
       caso 6
-
-         limpatela
-         escreval("=== RESUMO DOS 5 DIAS DA SEMANA ===")
-
-         se totalCadastrados = 0 entao
-
-            escreval("Nenhum medico cadastrado.")
-
-         senao
-
-            para opDiaSemana de 1 ate 5 faca
-
-               se opDiaSemana = 1 entao
-                  diaSemana <- "Segunda-feira"
-               fimse
-               se opDiaSemana = 2 entao
-                  diaSemana <- "Terca-feira"
-               fimse
-               se opDiaSemana = 3 entao
-                  diaSemana <- "Quarta-feira"
-               fimse
-               se opDiaSemana = 4 entao
-                  diaSemana <- "Quinta-feira"
-               fimse
-               se opDiaSemana = 5 entao
-                  diaSemana <- "Sexta-feira"
-               fimse
-
-               cargaManha <- 0
-               cargaTarde <- 0
-               cargaNoite <- 0
-
-               escreval("")
-               escreval("========================================")
-               escreval("DIA: ", diaSemana)
-               escreval("========================================")
-
-               para turnoConsulta de 1 ate 3 faca
-
-                  coluna <- ((opDiaSemana - 1) * 3) + turnoConsulta
-                  cargaAtual <- 0
-                  haEscaladoTurno <- falso
-
-                  escreval("")
-                  se turnoConsulta = 1 entao
-                     escreval("  --- Turno: Manha ---")
-                  fimse
-                  se turnoConsulta = 2 entao
-                     escreval("  --- Turno: Tarde ---")
-                  fimse
-                  se turnoConsulta = 3 entao
-                     escreval("  --- Turno: Noite ---")
-                  fimse
-
-                  para i de 1 ate totalCadastrados faca
-                     se escala[i,coluna] entao
-                        cargaAtual <- cargaAtual + 1
-                        haEscaladoTurno <- verdadeiro
-                        escreval("    * [ID ", identificadores[i], "] ", nomes[i], " - ", especialidades[i])
-                     fimse
-                  fimpara
-
-                  se nao haEscaladoTurno entao
-                     escreval("    (Nenhum medico escalado - DESCOBERTO)")
-                  fimse
-
-                  escreval("    Total no turno: ", cargaAtual, " medico(s)")
-
-                  se turnoConsulta = 1 entao
-                     cargaManha <- cargaAtual
-                  fimse
-                  se turnoConsulta = 2 entao
-                     cargaTarde <- cargaAtual
-                  fimse
-                  se turnoConsulta = 3 entao
-                     cargaNoite <- cargaAtual
-                  fimse
-
-               fimpara
-
-               maiorCargaDia <- cargaManha
-               se cargaTarde > maiorCargaDia entao
-                  maiorCargaDia <- cargaTarde
-               fimse
-               se cargaNoite > maiorCargaDia entao
-                  maiorCargaDia <- cargaNoite
-               fimse
-
-               menorCargaDia <- cargaManha
-               se cargaTarde < menorCargaDia entao
-                  menorCargaDia <- cargaTarde
-               fimse
-               se cargaNoite < menorCargaDia entao
-                  menorCargaDia <- cargaNoite
-               fimse
-
-               escreval("")
-               escreval("  --------------------------------------")
-               escreva("  Maior carga (", maiorCargaDia, " medico(s)): ")
-               primeiraExibicao <- verdadeiro
-
-               se cargaManha = maiorCargaDia entao
-                  escreva("Manha")
-                  primeiraExibicao <- falso
-               fimse
-               se cargaTarde = maiorCargaDia entao
-                  se nao primeiraExibicao entao
-                     escreva(", ")
-                  fimse
-                  escreva("Tarde")
-                  primeiraExibicao <- falso
-               fimse
-               se cargaNoite = maiorCargaDia entao
-                  se nao primeiraExibicao entao
-                     escreva(", ")
-                  fimse
-                  escreva("Noite")
-                  primeiraExibicao <- falso
-               fimse
-               escreval("")
-
-               escreva("  Menor carga (", menorCargaDia, " medico(s)): ")
-               primeiraExibicao <- verdadeiro
-
-               se cargaManha = menorCargaDia entao
-                  escreva("Manha")
-                  primeiraExibicao <- falso
-               fimse
-               se cargaTarde = menorCargaDia entao
-                  se nao primeiraExibicao entao
-                     escreva(", ")
-                  fimse
-                  escreva("Tarde")
-                  primeiraExibicao <- falso
-               fimse
-               se cargaNoite = menorCargaDia entao
-                  se nao primeiraExibicao entao
-                     escreva(", ")
-                  fimse
-                  escreva("Noite")
-                  primeiraExibicao <- falso
-               fimse
-               escreval("")
-
-            fimpara
-
-         fimse
-
-         escreval("")
-         escreva("Pressione ENTER para voltar ao menu...")
-         leia(nomeTemp)
-         
-         // =====================================
-         // OPCAO 7 - SAIR
-         // =====================================
-
-      caso 7
          escreval("Encerrando o programa...")
 
       outrocaso
