@@ -1,5 +1,7 @@
 algoritmo "SistemaEscalaMedica"
 
+          arquivo "cadastros.txt"
+
 var
    identificadores: vetor[1..24] de inteiro
    nomes: vetor[1..24] de caractere
