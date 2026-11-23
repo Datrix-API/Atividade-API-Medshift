@@ -1,6 +1,5 @@
 algoritmo "SistemaEscalaMedica"
 
-
 var
    identificadores: vetor[1..24] de inteiro
    nomes: vetor[1..24] de caractere
@@ -36,6 +35,13 @@ var
    faltaClinicos, faltaPediatras, faltaCirurgioes: inteiro
    x: inteiro
    descansoValido: logico
+
+   vagasPreenchidas, vagasSemana: inteiro
+   plantoesCompletos, plantoesIncompletos: inteiro
+   plantoesDescobertos: inteiro
+
+   porcCompletos, porcIncompletos: real
+   porcDescobertos, coberturaSemanal: real
 
 inicio
 
@@ -680,9 +686,12 @@ inicio
             Escreval("Total de medicos neste plantao: ", qtdPlantoes)
 
          fimse
-         //==============================
-         // OPcao 5 - Cobertura Semanal
-         //==============================
+         
+         
+
+      //==============================
+      // OPCAO 5 - COBERTURA SEMANAL
+      //==============================
 
       caso 5
 
@@ -691,7 +700,12 @@ inicio
          escreval("")
          escreval("Dia             Turno   Clin     Ped     Cir     Situacao")
          escreval("---------------------------------------------------------------")
+
          qtdPlantoes <- 0
+         plantoesCompletos <- 0
+         plantoesIncompletos <- 0
+         plantoesDescobertos <- 0
+         vagasSemana <- 0
 
          para opDiaSemana de 1 ate 5 faca
 
@@ -714,24 +728,32 @@ inicio
             para turnoConsulta de 1 ate 3 faca
 
                coluna <- ((opDiaSemana - 1) * 3) + turnoConsulta
+
                cargaAtual <- 0
                qtdClinicos <- 0
                qtdPediatras <- 0
                qtdCirurgioes <- 0
 
                para i de 1 ate totalCadastrados faca
+
                   se escala[i,coluna] entao
+
                      cargaAtual <- cargaAtual + 1
+
                      se codEspecialidades[i] = 1 entao
                         qtdClinicos <- qtdClinicos + 1
                      fimse
+
                      se codEspecialidades[i] = 2 entao
                         qtdPediatras <- qtdPediatras + 1
                      fimse
+
                      se codEspecialidades[i] = 3 entao
                         qtdCirurgioes <- qtdCirurgioes + 1
                      fimse
+
                   fimse
+
                fimpara
 
                faltaClinicos <- 2 - qtdClinicos
@@ -741,15 +763,22 @@ inicio
                se faltaClinicos < 0 entao
                   faltaClinicos <- 0
                fimse
+
                se faltaPediatras < 0 entao
                   faltaPediatras <- 0
                fimse
+
                se faltaCirurgioes < 0 entao
                   faltaCirurgioes <- 0
                fimse
 
-               // DIA - coluna com largura fixa de 16 caracteres
+               vagasPreenchidas <- 4 - faltaClinicos - faltaPediatras - faltaCirurgioes
+
+               vagasSemana <- vagasSemana + vagasPreenchidas
+
+               // DIA
                escreva(diaSemana)
+
                se opDiaSemana = 1 entao
                   escreva("   ")
                fimse
@@ -766,7 +795,7 @@ inicio
                   escreva("     ")
                fimse
 
-               // TURNO - coluna com largura fixa de 8 caracteres
+               // TURNO
                se turnoConsulta = 1 entao
                   escreva("Manha   ")
                fimse
@@ -777,7 +806,7 @@ inicio
                   escreva("Noite   ")
                fimse
 
-               // ESPECIALIDADES - colunas com largura fixa
+               // ESPECIALIDADES
                escreva(qtdClinicos, "/2")
                escreva("     ")
                escreva(qtdPediatras, "/1")
@@ -785,32 +814,61 @@ inicio
                escreva(qtdCirurgioes, "/1")
                escreva("     ")
 
-               se (faltaClinicos = 0) e (faltaPediatras = 0) e (faltaCirurgioes = 0) entao
-                  escreva("COMPLETO")
-                  escreva("     ")
+               // SITUACAO DO PLANTAO
+               se vagasPreenchidas = 4 entao
+
+                  escreval("COMPLETO")
+                  plantoesCompletos <- plantoesCompletos + 1
+
                senao
-                  qtdPlantoes <- qtdPlantoes + 1
+
                   se cargaAtual = 0 entao
-                     escreva("DESCOBERTO")
-                     escreva("   ")
+
+                     escreval("DESCOBERTO")
+                     plantoesDescobertos <- plantoesDescobertos + 1
+
                   senao
-                     escreva("INCOMPLETO")
-                     escreva("   ")
+
+                     escreval("INCOMPLETO")
+                     plantoesIncompletos <- plantoesIncompletos + 1
+
                   fimse
+
                fimse
 
-               escreval("")
-
             fimpara
+
          fimpara
 
-         escreval("---------------------------------------------------------------")
-         escreval("Plantoes incompletos ou descobertos: ", qtdPlantoes, " de 15")
+         // CALCULO DAS PORCENTAGENS
+
+         porcCompletos <- (plantoesCompletos * 100) / 15
+         porcIncompletos <- (plantoesIncompletos * 100) / 15
+         porcDescobertos <- (plantoesDescobertos * 100) / 15
+
+         coberturaSemanal <- (vagasSemana * 100) / 60
+
+         // RESULTADO FINAL
+
+         escreval("")
+         escreval("==============================================")
+         escreval("          RESUMO DA COBERTURA SEMANAL")
+         escreval("==============================================")
+
+         escreval("Plantoes descobertos: ", plantoesDescobertos, " de 15 ")
+
+         escreval("Plantoes completos: ", plantoesCompletos, " de 15 ")
+
+         escreval("Plantoes incompletos: ", plantoesIncompletos, " de 15 ")
+
+         escreval("Vagas preenchidas: ", vagasSemana, " de 60")
+
+         escreval("Cobertura semanal: ", coberturaSemanal:0:2, "%")
+
          escreval("")
          escreva("Pressione ENTER para voltar ao menu...")
          leia(nomeTemp)
          limpatela
-
 
          // =====================================
          // OPCAO 6 - MEDIA SEMANAL DE PLANTOES
