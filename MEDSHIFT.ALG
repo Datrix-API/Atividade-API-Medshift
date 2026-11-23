@@ -19,6 +19,8 @@ var
    turnoConsulta, espConsulta: inteiro
 
    qtdPlantoes: inteiro
+   somaPlantoes: inteiro
+   mediaSemanal: real
 
    existe, encontrado, jaEscalado: logico
    validoDispTurno, validoEsp: logico
@@ -47,7 +49,7 @@ inicio
       fimpara
    fimpara
 
-   enquanto opcao <> 6 faca
+   enquanto opcao <> 7 faca
 
       escreval("")
       escreval("=== SISTEMA DE ESCALA MEDICA ===")
@@ -56,7 +58,8 @@ inicio
       escreval("3. Escalar Medico no Plantao")
       escreval("4. Consultar Medicos Escalados")
       escreval("5. Vizualizar Cobertura Semanal")
-      escreval("6. Sair")
+      escreval("6. Calcular Media Semanal de Plantoes")
+      escreval("7. Sair")
       escreva("Escolha uma opcao: ")
       leia(opcao)
       escolha(opcao)
@@ -371,7 +374,7 @@ inicio
                   escreval("")
                   escreval("Escolha o dia da semana:")
                   escreval("1. Segunda-feira")
-                  escreval("2. Terça-feira")
+                  escreval("2. Ter a-feira")
                   escreval("3. Quarta-feira")
                   escreval("4. Quinta-feira")
                   escreval("5. Sexta-feira")
@@ -390,7 +393,7 @@ inicio
                      diaSemana <- "Segunda-feira"
                   fimse
                   se opDiaSemana = 2 entao
-                     diaSemana <- "Terça-feira"
+                     diaSemana <- "Ter a-feira"
                   fimse
                   se opDiaSemana = 3 entao
                      diaSemana <- "Quarta-feira"
@@ -514,7 +517,7 @@ inicio
                                  fimse
                               fimse
                               se nao descansoValido entao
-                                 escreval("[ERRO] Conflito com o turno da noite/manhã do dia seguinte.")
+                                 escreval("[ERRO] Conflito com o turno da noite/manh  do dia seguinte.")
                               senao
                                  se cargaAtual >= 5 entao
                                     escreval("[ERRO] Medico ja atingiu o limite de 5 plantoes semanais.")
@@ -542,7 +545,7 @@ inicio
                   escreval("[ERRO] Identificador nao encontrado.")
                fimse
                escreval("")
-               escreval("Deseja continuar a escalação?")
+               escreval("Deseja continuar a escala  o?")
                escreval("1. Sim")
                escreval("2. Nao")
                leia(opContEscalacao)
@@ -567,7 +570,7 @@ inicio
          escreval("")
          escreval("Escolha o dia da semana:")
          escreval("1. Segunda-feira")
-         escreval("2. Terça-feira")
+         escreval("2. Ter a-feira")
          escreval("3. Quarta-feira")
          escreval("4. Quinta-feira")
          escreval("5. Sexta-feira")
@@ -810,10 +813,66 @@ inicio
 
 
          // =====================================
-         // OPCAO 6 - SAIR
+         // OPCAO 6 - MEDIA SEMANAL DE PLANTOES
          // =====================================
 
       caso 6
+
+         limpatela
+         escreval("=== MEDIA SEMANAL DE PLANTOES ===")
+         escreval("")
+
+         se totalCadastrados = 0 entao
+
+            escreval("Nenhum medico cadastrado. Cadastre medicos para calcular a media.")
+
+         senao
+
+            somaPlantoes <- 0
+
+            escreval("PLANTOES ATRIBUIDOS POR MEDICO")
+            escreval("-----------------------------------------------")
+            escreval("ID   Nome                         Plantoes")
+            escreval("-----------------------------------------------")
+
+            // Conta os plantoes de cada medico nos 15 turnos da semana.
+            // Medicos sem plantoes tambem entram no calculo da media.
+            para i de 1 ate totalCadastrados faca
+
+               cargaAtual <- 0
+
+               para x de 1 ate 15 faca
+                  se escala[i,x] entao
+                     cargaAtual <- cargaAtual + 1
+                  fimse
+               fimpara
+
+               somaPlantoes <- somaPlantoes + cargaAtual
+               escreval(identificadores[i], "   ", nomes[i], "   ", cargaAtual)
+
+            fimpara
+
+            mediaSemanal <- somaPlantoes / totalCadastrados
+
+            escreval("-----------------------------------------------")
+            escreval("Total de medicos cadastrados: ", totalCadastrados)
+            escreval("Total de plantoes atribuidos: ", somaPlantoes)
+            escreval("Media semanal de plantoes por medico: ", mediaSemanal)
+            escreval("")
+            escreval("A media considera todos os medicos cadastrados, inclusive os que possuem zero plantoes.")
+
+         fimse
+
+         escreval("")
+         escreva("Pressione ENTER para voltar ao menu...")
+         leia(nomeTemp)
+         limpatela
+
+         // =====================================
+         // OPCAO 7 - SAIR
+         // =====================================
+
+      caso 7
          escreval("Encerrando o programa...")
 
       outrocaso
