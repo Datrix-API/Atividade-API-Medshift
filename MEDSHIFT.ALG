@@ -496,6 +496,13 @@ inicio
                            escreval("[ERRO] Médico já escalado nesse plantão.")
                         senao
                            qtdPlantoesDia <- 0
+                           // conta os plantoes do medico escolhido na semana
+                           cargaAtual <- 0
+                           para x de 1 ate 15 faca
+                              se escala[posicao,x] entao
+                                 cargaAtual <- cargaAtual + 1
+                              fimse
+                           fimpara
                            coluna <- ((opDiaSemana - 1) * 3) + 1
                            para x de coluna ate coluna + 2 faca
 
